@@ -25,10 +25,11 @@ class Location(db.Model):
 
 	location_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 	department_name = db.Column(db.String(100), nullable=False)
-	institution_id = db.Column(db.Integer, db.ForeginKey('institution.institution_id'), nullable=False)
+	institution_id = db.Column(db.Integer, db.ForeignKey('institution.institution_id'), nullable=False)
 
 	def __repr__(self):
 		return(f'<location_id={self.location_id} dept_name={self.department_name}')
+
 
 class User(db.Model):
 	"""User model - basic user information"""
@@ -40,13 +41,39 @@ class User(db.Model):
 	last_name = db.Column(db.String(30), nullable=False)
 	email = db.Column(db.Text, nullable=False)
 	password = db.Column(db.Text, nullable=False)
-	active = db.Boolean(db.String(10), nullable=False)
+	active = db.Column(db.Boolean, nullable=False)
 
 	# relationships:
 
 	def __repr__(self):
 		return(f'<user_id={self.user_id} email={self.email}>')
 
+
+class User_Access(db.Model):
+	"""User_Access model - contains access info for institution and department"""
+
+	__tablename__ = 'user_access'
+
+	access_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+	user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+	location_id = db.Column(db.Integer, db.ForeignKey('location.location_id'), nullable=False)
+	access_level = db.Column(db.String(10), nullable=False)
+
+	def _repr__(self):
+		return(f'<user_id={self.user_id} location_id={self.location_id} access={self.access_level}>')
+
+
+class Access_Requests(db.Model):
+	"""Access_Requests model - these are users requesting access to different departments"""
+
+	__tablename__ = 'access_requests'
+
+	request_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+	user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+	location_id = db.Column(db.Integer, db.ForeignKey('location.location_id'), nullable=False)
+
+	def __repr__(self):
+		print(f'<request_id={self.request_id} user_id={self.user_id} location_id={self.location_id}>')
 
 
 
