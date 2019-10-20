@@ -6,6 +6,30 @@ db = SQLAlchemy()
 
 ######################################################
 
+class Institution(db.Model):
+	"""Institution model - institution name"""
+
+	__tablename__ = 'institution'
+
+	institution_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+	institution_name = db.Column(db.String(100), nullable=False)
+
+	def __repr__(self):
+		return(f'<institution_id={self.institution_id} institution_name={self.institution_name}>')
+
+
+class Location(db.Model):
+	"""Location model - departments located within an institution"""
+
+	__tablename__ = 'location'
+
+	location_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+	department_name = db.Column(db.String(100), nullable=False)
+	institution_id = db.Column(db.Integer, db.ForeginKey('institution.institution_id'), nullable=False)
+
+	def __repr__(self):
+		return(f'<location_id={self.location_id} dept_name={self.department_name}')
+
 class User(db.Model):
 	"""User model - basic user information"""
 
