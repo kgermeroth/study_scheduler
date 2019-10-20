@@ -4,7 +4,27 @@ from flask_sqlalchemy import flask_sqlalchemy
 
 db = SQLAlchemy()
 
-###################################################
+######################################################
+
+class User(db.Model):
+	"""User model - basic user information"""
+
+	__tablename__ = 'users'
+
+	user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+	first_name = db.Column(db.String(30), nullable=False)
+	last_name = db.Column(db.String(30), nullable=False)
+	email = db.Column(db.Text, nullable=False)
+	password = db.Column(db.Text, nullable=False)
+	active = db.Boolean(db.String(10), nullable=False)
+
+	# relationships:
+
+	def __repr__(self):
+		return(f'<user_id={self.user_id} email={self.email}>')
+
+
+
 
 
 ######################################################
