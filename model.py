@@ -76,6 +76,30 @@ class Access_Requests(db.Model):
 		print(f'<request_id={self.request_id} user_id={self.user_id} location_id={self.location_id}>')
 
 
+class Timezones(db.Model):
+	"""Timezone Model - list of all timeszones to choose from"""
+
+	__tablename__ = 'timezones'
+
+	timezone_name = db.Column(db.String(50), primary_key=True)
+
+	def __repr__(self):
+		print(f'<timezone_name={self.timezone_name}>')
+
+
+class Frequency(db.Model):
+	"""Frequency Model - list of the frequencies to choose from"""
+
+	__tablename__ = 'frequency'
+
+	frequency = db.Column(db.String(20), primary_key=True)
+
+	def __repr__(self):
+		print(f'<frequency={self.frequency}>')
+
+
+
+
 
 
 ######################################################
