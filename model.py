@@ -1,6 +1,6 @@
 """Modes and database functions for projects db."""
 
-from flask_sqlalchemy import flask_sqlalchemy
+from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
@@ -55,7 +55,7 @@ class User_Access(db.Model):
 	__tablename__ = 'user_access'
 
 	access_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-	user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+	user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
 	location_id = db.Column(db.Integer, db.ForeignKey('location.location_id'), nullable=False)
 	access_level = db.Column(db.String(10), nullable=False)
 
@@ -106,7 +106,7 @@ class Projects(db.Model):
 	project_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 	int_project_name = db.Column(db.String(100), nullable=False)
 	ext_project_name = db.Column(db.String(100), nullable=False)
-	project_creator = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+	project_creator = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
 	location_id = db.Column(db.Integer, db.ForeignKey('location.location_id'), nullable=False)
 	timezone_name = db.Column(db.String(50), db.ForeignKey('timezones.timezone_name'), nullable=False)
 	project_status = db.Column(db.String(20), nullable=False)
