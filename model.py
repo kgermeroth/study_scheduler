@@ -9,7 +9,7 @@ db = SQLAlchemy()
 class Institution(db.Model):
 	"""Institution model - institution name"""
 
-	__tablename__ = 'institution'
+	__tablename__ = 'institutions'
 
 	institution_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 	institution_name = db.Column(db.String(100), nullable=False)
@@ -25,7 +25,7 @@ class Location(db.Model):
 
 	location_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 	department_name = db.Column(db.String(100), nullable=False)
-	institution_id = db.Column(db.Integer, db.ForeignKey('institution.institution_id'), nullable=False)
+	institution_id = db.Column(db.Integer, db.ForeignKey('institutions.institution_id'), nullable=False)
 
 	# relationships:
 	users = db.relationship('User_Access')
