@@ -81,7 +81,7 @@ class Access_Requests(db.Model):
 		print(f'<request_id={self.request_id} user_id={self.user_id} location_id={self.location_id}>')
 
 
-class Timezones(db.Model):
+class Timezone(db.Model):
 	"""Timezone Model - list of all timeszones to choose from"""
 
 	__tablename__ = 'timezones'
