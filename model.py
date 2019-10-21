@@ -115,6 +115,58 @@ class Projects(db.Model):
 		print(f'<project_id={self.project_id} int_project_name={self.int_project_name}>')
 
 
+class Project_Times(db.Model):
+	"""Project-Times - list of default start and end times for each project"""
+
+	__tablename__ = 'project_times'
+
+	time_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+	project_id = db. Column(db.Integer, db.ForeignKey('projects.project_id'), nullable=False)
+	start_time = db.Column(db.String(10), nullable=False)
+	end_time = db.Column(db.String(10), nullable=False)
+
+
+class Project_Default_Schedule(db.Model):
+	"""Project_default_schedule Model"""
+
+	__tablename__ = 'project_default_schedule'
+
+	proj_sched_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+	project_id = db.Column(db.Integer, db.ForeignKey('projects.project_id'), nullable=False)
+	frequency = db.Column(db.String(20), db.ForeignKey('frequency.frequency'), nullable=False)
+	repeat_in = db.Column(db.Integer, nullable=False)
+
+	def __repr__(self):
+		print(f'<project_id={self.project_id} frequency={self.frequency} repeat_in={self.repeat_in}>')
+
+
+class Blackouts(db.Model):
+	"""Blackouts Model - details blackout dates per project"""
+
+	__tablename__ = 'blackouts'
+
+	blackout_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+	project_id = db.Column(db.Integer, db.ForeignKey('projects.project_id'), nullable=False)
+	blackout_name = db.Column(db.String(40), nullable=True)
+	start = db.Column(db.DateTime, nullable=False)
+	end = db.Column(db.DateTime, nullable=False)
+
+	def __repr__(self):
+		print(f'project_id={self.project_id} start={self.start} end={self.end}>')
+
+
+class Project_Access(db.Model):
+	"""Project Access model - keeps track of what level of access users have for each project"""
+
+	__tablename__ = 'project_access'
+
+	project_id = db.Column(db.Integer, db.ForeignKey('projects.project_id'), primary_key=True)
+	user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), primary_key=True)
+	project_access = db.Column(db.String(20), nullable=False)
+
+	def __repr__(self):
+		print(f'<project_id={self.project_id} user_id={self.user_id} project_access={self.project_access}>')
+
 
 ######################################################
 # Helper functions
