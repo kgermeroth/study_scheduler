@@ -27,6 +27,9 @@ class Location(db.Model):
 	department_name = db.Column(db.String(100), nullable=False)
 	institution_id = db.Column(db.Integer, db.ForeignKey('institution.institution_id'), nullable=False)
 
+	# relationships:
+	users = db.relationship('User_Access')
+
 	def __repr__(self):
 		return(f'<location_id={self.location_id} dept_name={self.department_name}')
 
@@ -44,6 +47,8 @@ class User(db.Model):
 	active = db.Column(db.Boolean, nullable=False)
 
 	# relationships:
+	projects = db.relationship('Project_Access')
+	locations = db.relationship('User_Access')
 
 	def __repr__(self):
 		return(f'<user_id={self.user_id} email={self.email}>')
@@ -111,12 +116,20 @@ class Projects(db.Model):
 	timezone_name = db.Column(db.String(50), db.ForeignKey('timezones.timezone_name'), nullable=False)
 	project_status = db.Column(db.String(20), nullable=False)
 
+	# relationships:
+	users = db.relationship('Project_Access')
+	times = db.relationship('Project_Times')
+	default_schedule = db.relationship('Project_Default_Schedule')
+	blackouts = db.relationship('Blackouts')
+	full_schedule = db.relationship('Participant_Schedule')
+
+
 	def __repr__(self):
 		print(f'<project_id={self.project_id} int_project_name={self.int_project_name}>')
 
 
 class Project_Times(db.Model):
-	"""Project-Times - list of default start and end times for each project"""
+	"""Project_Times - list of default start and end times for each project"""
 
 	__tablename__ = 'project_times'
 
@@ -127,7 +140,7 @@ class Project_Times(db.Model):
 
 
 class Project_Default_Schedule(db.Model):
-	"""Project_default_schedule Model"""
+	"""Project_Default_Schedule Model"""
 
 	__tablename__ = 'project_default_schedule'
 
