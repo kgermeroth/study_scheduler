@@ -168,6 +168,22 @@ class Project_Access(db.Model):
 		print(f'<project_id={self.project_id} user_id={self.user_id} project_access={self.project_access}>')
 
 
+class Participant_Schedule(db.Model):
+	"""Participant_Schedule - has start and end times for each participant's appointment"""
+
+	__tablename__ = 'participant_schedule'
+
+	schedule_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+	project_id = db.Column(db.Integer, db.ForeignKey('projects.project_id'), nullable=False)
+	participant_id = db.Column(db.Integer, nullable=False)
+	start = db.Column(db.DateTime, nullable=False)
+	end = db.Column(db.DateTime, nullable=False)
+	scheduled_by = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+
+	def __repr__(self):
+		print(f'<project_id={self.project_id} participant_id={self.participant_id} start={self.start} end={self.end}')
+
+
 ######################################################
 # Helper functions
 
