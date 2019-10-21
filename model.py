@@ -98,7 +98,21 @@ class Frequency(db.Model):
 		print(f'<frequency={self.frequency}>')
 
 
+class Projects(db.Model):
+	"""Project Model - all basic info for project"""
 
+	__tablename__ = 'projects'
+
+	project_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+	int_project_name = db.Column(db.String(100), nullable=False)
+	ext_project_name = db.Column(db.String(100), nullable=False)
+	project_creator = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+	location_id = db.Column(db.Integer, db.ForeignKey('location.location_id'), nullable=False)
+	timezone_name = db.Column(db.String(50), db.ForeignKey('timezones.timezone_name'), nullable=False)
+	project_status = db.Column(db.String(20), nullable=False)
+
+	def __repr__(self):
+		print(f'<project_id={self.project_id} int_project_name={self.int_project_name}>')
 
 
 
