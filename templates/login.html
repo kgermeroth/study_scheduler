@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+	<div class="row justify-content-center">
+			<h1>Login Now to Start Scheduling!</h1>
+	</div>
+	<div class="row justify-content-center">
+			<h2>Log in or register to get started</h2>
+	</div>
+	<div class="row justify-content-center">
+		<form action="/login-verification">
+			Email: <input type="text" name="email" required><br>
+			Password: <input type="password" name="password" required><br>
+			<input type="submit">
+		</form>
+	</div><br><br>
+	<div class="row justify-content-center">
+		<p>Not yet a user? Click <a href="/register">here</a> to register.</p>
+	</div>
+</div>
+
+{% endblock %}

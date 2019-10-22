@@ -6,7 +6,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from model import *
 
 import os
-import register_funcs
+import register_funcs, util
 
 app = Flask(__name__)
 
@@ -45,7 +45,7 @@ def register_user():
 	submission = request.form
 	email = submission['email_address']
 
-	if register_funcs.get_user_by_email(email):
+	if util.get_user_by_email(email):
 		flash('This email address already exists')
 
 	else:
@@ -53,7 +53,53 @@ def register_user():
 
 		flash(f'"{email}" has been successfully added as a user')
 
-	return redirect('/register')
+	return redirect('/login')
+
+
+@app.route('/login')
+def display_login_page():
+	"""Displays login page"""
+
+	return render_template('login.html')
+
+
+@app.route('/login-verification')
+def verify_login_information():
+	"""Checks user input against database"""
+
+	submission = request.args
+
+	email = submission['email']
+	pwd = submission['password']
+
+	user = util.get_user_by_email(email)
+
+	if user is None:
+		flash('This email does not exist. Please check spelling or register')
+		return redirect('/login')
+
+	else:
+		# check to see if the password matches
+		pwd_match = util.verify_password(user.password, pwd)
+
+		if pwd_match:
+			session['user_id'] = user.user_id
+			flash('You have been successfully logged in!')
+			return redirect('/')
+
+		else:
+			flash('Provided password was incorrect.')
+			return redirect('/login')
+
+
+@app.route('/')
+def display_home():
+	"""Displays project home page"""
+
+	return render_template('home.html')
+
+
+
 
 
 
