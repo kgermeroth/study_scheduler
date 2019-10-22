@@ -1,3 +1,5 @@
+from model import *
+
 import hashlib, binascii, os
 
 # hash_password and verify_password functions courtesy of Vitosh Academy at https://www.vitoshacademy.com/hashing-passwords-in-python/
@@ -35,3 +37,11 @@ def verify_password(stored_password, provided_password):
     # convert the salted and hash into hexadecimal and compare this hash to the stored_password
     pwdhash = binascii.hexlify(pwdhash).decode('ascii')
     return pwdhash == stored_password
+
+
+def get_user_by_email(email):
+    """Takes user email and checks to see if it already exists.
+
+        Returns object if user already exists, False if not."""
+
+    return User.query.filter(User.email == email).first()
