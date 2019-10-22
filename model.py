@@ -14,6 +14,9 @@ class Institution(db.Model):
 	institution_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 	institution_name = db.Column(db.String(100), nullable=False)
 
+	# relationships:
+	users = db.relationship('User')
+
 	def __repr__(self):
 		return(f'<institution_id={self.institution_id} institution_name={self.institution_name}>')
 
@@ -44,6 +47,7 @@ class User(db.Model):
 	last_name = db.Column(db.String(30), nullable=False)
 	email = db.Column(db.Text, nullable=False)
 	password = db.Column(db.Text, nullable=False)
+	institution_id = db.Column(db.Integer, db.ForeignKey('institutions.institution_id'), nullable=False)
 	active = db.Column(db.Boolean, nullable=False)
 
 	# relationships:
