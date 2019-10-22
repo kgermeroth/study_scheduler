@@ -38,6 +38,31 @@ def get_new_departments():
 	return jsonify(dept_list)
 
 
+@app.route('/register', methods=['POST'])
+def register_user():
+	"""Takes form inputs and adds user to database"""
+
+	submission = request.form
+	email = submission['email_address']
+
+	if register_funcs.get_user_by_email(email):
+		flash('This email address already exists')
+
+	else:
+		# add to users table:
+		register_funcs.add_new_user(submission)
+
+		# get the new user_id:
+		user_id = register_funcs.get_user_by_email(email).user_id
+
+		# add location for user
+		register_funcs.add_location_for_user(user_id, submission)
+
+		flash(f'"{email}" has been successfully added as a user')
+
+	return redirect('/register')
+
+
 
 if __name__ == '__main__':
 
