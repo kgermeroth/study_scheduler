@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+	<div class="row justify-content-center">
+		<h1>New Users Please Register Below</h1>
+	</div>
+	<div class="row justify-content-center">
+		<form action='/register' method="POST">
+			<h4>Login Information:</h4>
+			Email Address:  <input type="text" name="email_address" required><br>
+			Password: <input type="password" name="password" required><br><br>
+
+			<h4>User Info</h4>
+			First Name: <input type="text" name="first_name" required><br>
+			Last Name: <input type="text" name="last_name" required><br>
+			Institution: 
+				<select name="institution_choice">
+					{% for institution in instit_list %}
+						<option value="{{ institution[0] }}">{{ institution[1] }}
+					{% endfor %}
+				</select><br>
+			Department:
+			<select name="location_choice">
+				{% for dept in dept_list %}
+				<option value="{{ dept[0] }}">{{ dept[1] }}
+				{% endfor %}
+			</select>
+
+		</form>
+	</div>
+</div>
+
+
+{% endblock %}
