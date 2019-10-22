@@ -49,14 +49,7 @@ def register_user():
 		flash('This email address already exists')
 
 	else:
-		# add to users table:
-		register_funcs.add_new_user(submission)
-
-		# get the new user_id:
-		user_id = register_funcs.get_user_by_email(email).user_id
-
-		# add location for user
-		register_funcs.add_location_for_user(user_id, submission)
+		register_funcs.complete_registration(submission)
 
 		flash(f'"{email}" has been successfully added as a user')
 

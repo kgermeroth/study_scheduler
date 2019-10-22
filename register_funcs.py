@@ -69,6 +69,20 @@ def add_location_for_user(user_id, submission):
 	db.session.commit()
 
 
+def complete_registration(submission):
+	"""Does full user_registration process"""
+	
+	email = submission['email_address']
+
+	# add to users table:
+	add_new_user(submission)
+
+	# get the new user_id:
+	user_id = get_user_by_email(email).user_id
+
+	# add location for user
+	add_location_for_user(user_id, submission)
+
 
 
 
