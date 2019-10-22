@@ -16,13 +16,13 @@
 			First Name: <input type="text" name="first_name" required><br>
 			Last Name: <input type="text" name="last_name" required><br>
 			Institution: 
-				<select name="institution_choice">
+				<select name="institution_choice" id="institution_choice">
 					{% for institution in instit_list %}
 						<option value="{{ institution[0] }}">{{ institution[1] }}
 					{% endfor %}
 				</select><br>
 			Department:
-			<select name="location_choice">
+			<select name="location_choice" id="location_choice">
 				{% for dept in dept_list %}
 				<option value="{{ dept[0] }}">{{ dept[1] }}
 				{% endfor %}
@@ -33,4 +33,31 @@
 </div>
 
 
+{% endblock %}
+
+{% block js %}
+	<script>
+		// Need to handle department display when the institution changes
+
+		// Add event listener to institution dropdown
+		const institDropdown = document.querySelector('#institution_choice');
+
+		institDropdown.addEventListener('change', () => {
+			const institChoice = $('#institution_choice').val();
+
+			$.get('/get-new-departments.json', {institChoice: institChoice}, (data) => {
+
+				const locationDiv = document.querySelector('#location_choice');
+
+				// change innerHTML to nothing (this removes all the choices)
+				locationDiv.innerHTML = '';
+
+				// for each department received, recreate an option element and append to the div
+				for (const location of data) {
+					$('<option/>', { value : location[0] }).text(location[1]).appendTo('#location_choice');
+				}
+
+			});			
+		});
+	</script>
 {% endblock %}
