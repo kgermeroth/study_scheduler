@@ -65,4 +65,10 @@ def get_user_departments():
     return avail_departments
 
 
+def set_session_project_id(project_id):
+    """Sets session['project_id']"""
+
+    session['proj_id'] = project_id
+
+
 
