@@ -68,6 +68,9 @@ class Dept_Access(db.Model):
 	department_id = db.Column(db.Integer, db.ForeignKey('departments.department_id'), nullable=False)
 	access_level = db.Column(db.String(10), nullable=False)
 
+	# relationships:
+	department = db.relationship('Department')
+
 	def _repr__(self):
 		return(f'<user_id={self.user_id} department_id={self.department_id} access={self.access_level}>')
 
