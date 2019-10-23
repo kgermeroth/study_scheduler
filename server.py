@@ -117,7 +117,14 @@ def create_project():
 
 	submission = request.form
 
+	# check to see if project exists
+	if create_funcs.check_project_dupes(submission) is None:
+		flash('A project with this name already exists')
+		return redirect('/create')
+
 	create_funcs.submit_project(submission)
+
+	create_funcs.add_creator_to_proj_access(submission)
 
 	flash('Your project has been created!')
 

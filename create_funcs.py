@@ -15,6 +15,12 @@ def get_timezones():
 	return timezones
 
 
+def check_project_dupes(submission):
+	"""Checks database for duplicate project"""
+
+	return Project.query.filter(Project.int_project_name == submission['int_proj_name']).all()
+
+
 def submit_project(submission):
 	"""Takes project information and creates project in database"""
 
@@ -32,3 +38,20 @@ def submit_project(submission):
 
 	db.session.add(project)
 	db.session.commit()
+
+
+def add_creator_to_proj_access(submission):
+	"""Adds creator of project as admin to project_access table"""
+
+	int_project_name = submission['int_proj_name']
+
+	project = Project.query.filter(Project.int_project_name == int_project_name).first()
+
+	access = Project_Access(project_id=project.project_id,
+							user_id=session['user_id'],
+							project_access='admin')
+
+	db.session.add(access)
+	db.session.commit()
+
+
