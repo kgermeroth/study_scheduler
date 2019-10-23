@@ -57,10 +57,10 @@ def get_user_departments():
 
     avail_departments = []
 
-    user_departments = User_Access.query.filter(User_Access.user_id == user_id).all()
+    user_departments = Dept_Access.query.filter(Dept_Access.user_id == user_id).all()
 
-    for location in user_departments:
-        avail_departments.append((location.location_id, location.location.department_name))
+    for department in user_departments:
+        avail_departments.append((department.department_id, department.department.department_name))
 
     return avail_departments
 

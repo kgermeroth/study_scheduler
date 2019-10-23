@@ -55,7 +55,7 @@ def add_department_for_user(user_id, submission):
 
 	department_id = submission['department_choice']
 
-	access = User_Access(user_id=user_id, department_id=department_id, access_level='user')
+	access = Dept_Access(user_id=user_id, department_id=department_id, access_level='user')
 
 	db.session.add(access)
 	db.session.commit()

@@ -58,10 +58,10 @@ class User(db.Model):
 		return(f'<user_id={self.user_id} email={self.email}>')
 
 
-class User_Access(db.Model):
-	"""User_Access model - contains access info for institution and department"""
+class Dept_Access(db.Model):
+	"""Dept_Access model - contains access info for institution and department"""
 
-	__tablename__ = 'user_access'
+	__tablename__ = 'dept_access'
 
 	access_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 	user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
