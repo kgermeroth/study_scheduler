@@ -97,7 +97,9 @@ def verify_login_information():
 def display_home():
 	"""Displays project home page"""
 
-	return render_template('home.html')
+	proj_list = util.get_users_projects()
+
+	return render_template('home.html', proj_list=proj_list)
 
 
 @app.route('/create')

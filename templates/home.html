@@ -7,6 +7,9 @@
 		</div>
 		<div class="row justify-content-center">
 				<h2>Available Projects</h2>
+				{% for proj in proj_list %}
+					<a href="/project/{{ proj[0] }}" class="project_link">{{ proj[1] }}</a><br>
+				{% endfor %}
 		</div>
 	</div>
 
