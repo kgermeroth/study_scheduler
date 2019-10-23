@@ -123,7 +123,7 @@ class Frequency(db.Model):
 		return(f'<frequency={self.frequency}>')
 
 
-class Projects(db.Model):
+class Project(db.Model):
 	"""Project Model - all basic info for project"""
 
 	__tablename__ = 'projects'

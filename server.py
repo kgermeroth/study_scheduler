@@ -111,7 +111,17 @@ def display_create_page():
 	return render_template('create.html', avail_depts=avail_depts, timezones=timezones)
 
 
+@app.route('/create-project', methods=["POST"])
+def create_project():
+	"""Adds project to database"""
 
+	submission = request.form
+
+	create_funcs.submit_project(submission)
+
+	flash('Your project has been created!')
+
+	return redirect('/')
 
 
 
