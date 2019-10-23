@@ -15,7 +15,7 @@ class Institution(db.Model):
 	institution_name = db.Column(db.String(100), nullable=False)
 
 	# relationships:
-	users = db.relationship('User')
+	users = db.relationship('Instit_Access')
 
 	def __repr__(self):
 		return(f'<institution_id={self.institution_id} institution_name={self.institution_name}>')
@@ -31,7 +31,7 @@ class Department(db.Model):
 	institution_id = db.Column(db.Integer, db.ForeignKey('institutions.institution_id'), nullable=False)
 
 	# relationships:
-	users = db.relationship('User_Access', backref='departments')
+	users = db.relationship('Dept_Access', backref='departments')
 
 	def __repr__(self):
 		return(f'<department_id={self.department_id} dept_name={self.department_name}')
@@ -78,7 +78,7 @@ class Instit_Access(db.Model):
 	__tablename__ = 'instit_access'
 
 	user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), primary_key=True)
-	institution_id = db.Column(db.Integer, db.ForeignKey('institutions.institution_id') primary_key=True)
+	institution_id = db.Column(db.Integer, db.ForeignKey('institutions.institution_id'), primary_key=True)
 	access_level = db.Column(db.String(10), nullable=False)
 
 	def __repr__(self):
