@@ -82,7 +82,7 @@ class Instit_Access(db.Model):
 	access_level = db.Column(db.String(10), nullable=False)
 
 	def __repr__(self):
-		print(f'<institution_id={self.institution_id} user_id={self.user_id} access={self.access_level}')
+		return(f'<institution_id={self.institution_id} user_id={self.user_id} access={self.access_level}>')
 
 
 class Access_Requests(db.Model):
@@ -95,7 +95,7 @@ class Access_Requests(db.Model):
 	department_id = db.Column(db.Integer, db.ForeignKey('departments.department_id'), nullable=False)
 
 	def __repr__(self):
-		print(f'<request_id={self.request_id} user_id={self.user_id} department_id={self.department_id}>')
+		return(f'<request_id={self.request_id} user_id={self.user_id} department_id={self.department_id}>')
 
 
 class Timezone(db.Model):
@@ -106,7 +106,7 @@ class Timezone(db.Model):
 	timezone_name = db.Column(db.String(50), primary_key=True)
 
 	def __repr__(self):
-		print(f'<timezone_name={self.timezone_name}>')
+		return(f'<timezone_name={self.timezone_name}>')
 
 
 class Frequency(db.Model):
@@ -117,7 +117,7 @@ class Frequency(db.Model):
 	frequency = db.Column(db.String(20), primary_key=True)
 
 	def __repr__(self):
-		print(f'<frequency={self.frequency}>')
+		return(f'<frequency={self.frequency}>')
 
 
 class Projects(db.Model):
@@ -142,7 +142,7 @@ class Projects(db.Model):
 
 
 	def __repr__(self):
-		print(f'<project_id={self.project_id} int_project_name={self.int_project_name}>')
+		return(f'<project_id={self.project_id} int_project_name={self.int_project_name}>')
 
 
 class Project_Times(db.Model):
@@ -154,6 +154,9 @@ class Project_Times(db.Model):
 	project_id = db. Column(db.Integer, db.ForeignKey('projects.project_id'), nullable=False)
 	start_time = db.Column(db.String(10), nullable=False)
 	end_time = db.Column(db.String(10), nullable=False)
+
+	def __repr__(self):
+		return(f'<project_id={self.project_id} start={self.start_time} end={self.end_time}>')
 
 
 class Project_Default_Schedule(db.Model):
@@ -167,7 +170,7 @@ class Project_Default_Schedule(db.Model):
 	repeat_in = db.Column(db.Integer, nullable=False)
 
 	def __repr__(self):
-		print(f'<project_id={self.project_id} frequency={self.frequency} repeat_in={self.repeat_in}>')
+		return(f'<project_id={self.project_id} frequency={self.frequency} repeat_in={self.repeat_in}>')
 
 
 class Blackouts(db.Model):
@@ -182,7 +185,7 @@ class Blackouts(db.Model):
 	end = db.Column(db.DateTime, nullable=False)
 
 	def __repr__(self):
-		print(f'project_id={self.project_id} start={self.start} end={self.end}>')
+		return(f'project_id={self.project_id} start={self.start} end={self.end}>')
 
 
 class Project_Access(db.Model):
@@ -195,7 +198,7 @@ class Project_Access(db.Model):
 	project_access = db.Column(db.String(20), nullable=False)
 
 	def __repr__(self):
-		print(f'<project_id={self.project_id} user_id={self.user_id} project_access={self.project_access}>')
+		return(f'<project_id={self.project_id} user_id={self.user_id} project_access={self.project_access}>')
 
 
 class Participant_Schedule(db.Model):
@@ -211,7 +214,7 @@ class Participant_Schedule(db.Model):
 	scheduled_by = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
 
 	def __repr__(self):
-		print(f'<project_id={self.project_id} participant_id={self.participant_id} start={self.start} end={self.end}')
+		return(f'<project_id={self.project_id} participant_id={self.participant_id} start={self.start} end={self.end}')
 
 
 ######################################################

@@ -84,7 +84,7 @@ def verify_login_information():
 
 		if pwd_match:
 			session['user_id'] = user.user_id
-			session['instit_id'] = user.institution.institution_id
+			session['instit_id'] = user.institution[0].institution_id
 			flash('You have been successfully logged in!')
 			return redirect('/')
 
@@ -104,11 +104,11 @@ def display_home():
 def display_create_page():
 	"""Displays project creation page"""
 
-	avail_departments = util.get_user_departments()
+	avail_depts = util.get_user_departments()
 
 	timezones = create_funcs.get_timezones()
 
-	return render_template('create.html', avail_departments=avail_departments, timezones=timezones)
+	return render_template('create.html', avail_depts=avail_depts, timezones=timezones)
 
 
 
