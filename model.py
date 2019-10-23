@@ -22,19 +22,19 @@ class Institution(db.Model):
 
 
 class Department(db.Model):
-	"""Location model - departments located within an institution"""
+	"""departments model - departments located within an institution"""
 
-	__tablename__ = 'department'
+	__tablename__ = 'departments'
 
 	department_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 	department_name = db.Column(db.String(100), nullable=False)
 	institution_id = db.Column(db.Integer, db.ForeignKey('institutions.institution_id'), nullable=False)
 
 	# relationships:
-	users = db.relationship('User_Access', backref='department')
+	users = db.relationship('User_Access', backref='departments')
 
 	def __repr__(self):
-		return(f'<location_id={self.location_id} dept_name={self.department_name}')
+		return(f'<department_id={self.department_id} dept_name={self.department_name}')
 
 
 class User(db.Model):
@@ -65,11 +65,11 @@ class User_Access(db.Model):
 
 	access_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 	user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
-	location_id = db.Column(db.Integer, db.ForeignKey('location.location_id'), nullable=False)
+	department_id = db.Column(db.Integer, db.ForeignKey('departments.department_id'), nullable=False)
 	access_level = db.Column(db.String(10), nullable=False)
 
 	def _repr__(self):
-		return(f'<user_id={self.user_id} location_id={self.location_id} access={self.access_level}>')
+		return(f'<user_id={self.user_id} department_id={self.department_id} access={self.access_level}>')
 
 
 class Access_Requests(db.Model):
@@ -79,10 +79,10 @@ class Access_Requests(db.Model):
 
 	request_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 	user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
-	location_id = db.Column(db.Integer, db.ForeignKey('location.location_id'), nullable=False)
+	department_id = db.Column(db.Integer, db.ForeignKey('departments.department_id'), nullable=False)
 
 	def __repr__(self):
-		print(f'<request_id={self.request_id} user_id={self.user_id} location_id={self.location_id}>')
+		print(f'<request_id={self.request_id} user_id={self.user_id} department_id={self.department_id}>')
 
 
 class Timezone(db.Model):
@@ -116,7 +116,7 @@ class Projects(db.Model):
 	int_project_name = db.Column(db.String(100), nullable=False)
 	ext_project_name = db.Column(db.String(100), nullable=False)
 	project_creator = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
-	location_id = db.Column(db.Integer, db.ForeignKey('location.location_id'), nullable=False)
+	department_id = db.Column(db.Integer, db.ForeignKey('departments.department_id'), nullable=False)
 	timezone_name = db.Column(db.String(50), db.ForeignKey('timezones.timezone_name'), nullable=False)
 	project_status = db.Column(db.String(20), nullable=False)
 
