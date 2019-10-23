@@ -61,6 +61,17 @@ def add_department_for_user(user_id, submission):
 	db.session.commit()
 
 
+def add_institution_for_user(user_id, submission):
+	"""Adds 'user' access for user to institution"""
+
+	institution_id = submission['institution_choice']
+
+	access = Instit_Access(user_id=user_id, institution_id=institution_id, access_level='user')
+
+	db.session.add(access)
+	db.session.commit()
+
+
 def complete_registration(submission):
 	"""Does full user_registration process"""
 
@@ -72,8 +83,13 @@ def complete_registration(submission):
 	# get the new user_id:
 	user_id = util.get_user_by_email(email).user_id
 
-	# add location for user
+	# add institution for user
+	add_institution_for_user(user_id, submission)
+
+	# add department for user
 	add_department_for_user(user_id, submission)
+
+
 
 
 

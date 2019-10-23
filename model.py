@@ -59,7 +59,7 @@ class User(db.Model):
 
 
 class Dept_Access(db.Model):
-	"""Dept_Access model - contains access info for institution and department"""
+	"""Dept_Access model - contains access info for department"""
 
 	__tablename__ = 'dept_access'
 
@@ -70,6 +70,19 @@ class Dept_Access(db.Model):
 
 	def _repr__(self):
 		return(f'<user_id={self.user_id} department_id={self.department_id} access={self.access_level}>')
+
+
+class Instit_Access(db.Model):
+	"""Instit_Access model - contains access info for institution"""
+
+	__tablename__ = 'instit_access'
+
+	user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), primary_key=True)
+	institution_id = db.Column(db.Integer, db.ForeignKey('institutions.institution_id') primary_key=True)
+	access_level = db.Column(db.String(10), nullable=False)
+
+	def __repr__(self):
+		print(f'<institution_id={self.institution_id} user_id={self.user_id} access={self.access_level}')
 
 
 class Access_Requests(db.Model):
