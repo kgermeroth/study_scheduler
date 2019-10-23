@@ -43,7 +43,6 @@ def add_new_user(submission):
 					last_name=last_name,
 					email=email,
 					password=password,
-					institution_id=institution_id,
 					active=True)
 
 	db.session.add(new_user)

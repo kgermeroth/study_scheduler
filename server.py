@@ -84,6 +84,7 @@ def verify_login_information():
 
 		if pwd_match:
 			session['user_id'] = user.user_id
+			session['instit_id'] = user.institution.institution_id
 			flash('You have been successfully logged in!')
 			return redirect('/')
 

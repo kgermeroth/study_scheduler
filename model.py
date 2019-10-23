@@ -47,12 +47,12 @@ class User(db.Model):
 	last_name = db.Column(db.String(30), nullable=False)
 	email = db.Column(db.Text, nullable=False)
 	password = db.Column(db.Text, nullable=False)
-	institution_id = db.Column(db.Integer, db.ForeignKey('institutions.institution_id'), nullable=False)
 	active = db.Column(db.Boolean, nullable=False)
 
 	# relationships:
 	projects = db.relationship('Project_Access')
-	departments = db.relationship('User_Access')
+	departments = db.relationship('Dept_Access')
+	institution = db.relationship('Instit_Access')
 
 	def __repr__(self):
 		return(f'<user_id={self.user_id} email={self.email}>')
