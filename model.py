@@ -137,7 +137,7 @@ class Project(db.Model):
 	project_status = db.Column(db.String(20), nullable=False)
 
 	# relationships:
-	users = db.relationship('Project_Access')
+	users = db.relationship('Project_Access', backref='project')
 	times = db.relationship('Project_Times')
 	default_schedule = db.relationship('Project_Default_Schedule')
 	blackouts = db.relationship('Blackouts')
