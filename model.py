@@ -21,17 +21,17 @@ class Institution(db.Model):
 		return(f'<institution_id={self.institution_id} institution_name={self.institution_name}>')
 
 
-class Location(db.Model):
+class Department(db.Model):
 	"""Location model - departments located within an institution"""
 
-	__tablename__ = 'location'
+	__tablename__ = 'department'
 
-	location_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+	department_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 	department_name = db.Column(db.String(100), nullable=False)
 	institution_id = db.Column(db.Integer, db.ForeignKey('institutions.institution_id'), nullable=False)
 
 	# relationships:
-	users = db.relationship('User_Access')
+	users = db.relationship('User_Access', backref='department')
 
 	def __repr__(self):
 		return(f'<location_id={self.location_id} dept_name={self.department_name}')
@@ -52,7 +52,7 @@ class User(db.Model):
 
 	# relationships:
 	projects = db.relationship('Project_Access')
-	locations = db.relationship('User_Access')
+	departments = db.relationship('User_Access')
 
 	def __repr__(self):
 		return(f'<user_id={self.user_id} email={self.email}>')

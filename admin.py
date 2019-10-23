@@ -103,8 +103,8 @@ def add_departments():
 		return
 
 	# if yes, add to database and confirm to user it has been updated
-	location = Location(department_name=dept_to_add, institution_id=chosen_instit)
-	db.session.add(location)
+	department = Department(department_name=dept_to_add, institution_id=chosen_instit)
+	db.session.add(department)
 	db.session.commit()
 
 	print(f'\n"{dept_to_add}" has been added to the database.\n')

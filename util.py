@@ -48,21 +48,21 @@ def get_user_by_email(email):
     return User.query.filter(User.email == email).first()
 
 
-def get_user_locations():
+def get_user_departments():
     """Returns a list of a user's available locations as tuple.
 
         [(location_id, department_name)] """
 
     user_id = session['user_id']
 
-    avail_locations = []
+    avail_departments = []
 
-    user_locations = User_Access.query.filter(User_Access.user_id == user_id).all()
+    user_departments = User_Access.query.filter(User_Access.user_id == user_id).all()
 
-    for location in user_locations:
-        avail_locations.append((location.location_id, location.location.department_name))
+    for location in user_departments:
+        avail_departments.append((location.location_id, location.location.department_name))
 
-    return avail_locations
+    return avail_departments
 
 
 

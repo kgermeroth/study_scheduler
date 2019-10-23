@@ -20,10 +20,10 @@ def get_depts(institution_id):
 
 	dept_list = []
 
-	departments = Location.query.filter(Location.institution_id == institution_id).all()
+	departments = Department.query.filter(Department.institution_id == institution_id).all()
 
 	for dept in departments:
-		dept_list.append((dept.location_id, dept.department_name))
+		dept_list.append((dept.department_id, dept.department_name))
 
 	return dept_list
 
@@ -50,12 +50,12 @@ def add_new_user(submission):
 	db.session.commit()
 
 
-def add_location_for_user(user_id, submission):
-	"""Adds a location for a specific user"""
+def add_department_for_user(user_id, submission):
+	"""Adds a department for a specific user"""
 
-	location_id = submission['location_choice']
+	department_id = submission['department_choice']
 
-	access = User_Access(user_id=user_id, location_id=location_id, access_level='user')
+	access = User_Access(user_id=user_id, department_id=department_id, access_level='user')
 
 	db.session.add(access)
 	db.session.commit()
@@ -73,7 +73,7 @@ def complete_registration(submission):
 	user_id = util.get_user_by_email(email).user_id
 
 	# add location for user
-	add_location_for_user(user_id, submission)
+	add_department_for_user(user_id, submission)
 
 
 

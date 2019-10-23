@@ -6,7 +6,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from model import *
 
 import os
-import register_funcs, util
+import register_funcs, util, create_funcs
 
 app = Flask(__name__)
 
@@ -97,6 +97,17 @@ def display_home():
 	"""Displays project home page"""
 
 	return render_template('home.html')
+
+
+@app.route('/create')
+def display_create_page():
+	"""Displays project creation page"""
+
+	avail_departments = util.get_user_departments()
+
+	timezones = create_funcs.get_timezones()
+
+	return render_template('create.html', avail_departments=avail_departments, timezones=timezones)
 
 
 
