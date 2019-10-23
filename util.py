@@ -71,4 +71,19 @@ def set_session_project_id(project_id):
     session['proj_id'] = project_id
 
 
+def get_users_projects():
+    """Gets a list of all of a users projects
+
+    Returns a list of tuples [(project_id, int_proj_name)]"""
+
+    proj_list = []
+
+    projects = Project_Access.query.filter(Project_Access.user_id == session['user_id']).all()
+
+    for project in projects:
+        proj_list.append((project.project_id, project.project.int_project_name))
+
+    return proj_list
+
+
 
