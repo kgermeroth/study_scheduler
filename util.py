@@ -1,4 +1,5 @@
 from model import *
+from flask import session
 
 import hashlib, binascii, os
 
@@ -45,3 +46,23 @@ def get_user_by_email(email):
         Returns object if user already exists, False if not."""
 
     return User.query.filter(User.email == email).first()
+
+
+def get_user_locations():
+    """Returns a list of a user's available locations as tuple.
+
+        [(location_id, department_name)] """
+
+    user_id = session['user_id']
+
+    avail_locations = []
+
+    user_locations = User_Access.query.filter(User_Access.user_id == user_id).all()
+
+    for location in user_locations:
+        avail_locations.append((location.location_id, location.location.department_name))
+
+    return avail_locations
+
+
+

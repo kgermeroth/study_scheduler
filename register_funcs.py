@@ -28,14 +28,6 @@ def get_depts(institution_id):
 	return dept_list
 
 
-def get_user_by_email(email):
-	"""Takes user email and checks to see if it already exists.
-
-		Returns object if user already exists, False if not."""
-
-	return User.query.filter(User.email == email).first()
-
-
 def add_new_user(submission):
 	"""Adds user to database in users table"""
 
@@ -71,14 +63,14 @@ def add_location_for_user(user_id, submission):
 
 def complete_registration(submission):
 	"""Does full user_registration process"""
-	
+
 	email = submission['email_address']
 
 	# add to users table:
 	add_new_user(submission)
 
 	# get the new user_id:
-	user_id = get_user_by_email(email).user_id
+	user_id = util.get_user_by_email(email).user_id
 
 	# add location for user
 	add_location_for_user(user_id, submission)
