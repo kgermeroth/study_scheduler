@@ -7,14 +7,23 @@
 		</div>
 		<div class="row justify-content-center">
 				<form action='/create-project' method="POST">
-					Internal Project Name: <input type="text" name="int_proj_name"><br>
+					Internal Project Name: <input type="text" name="int_proj_name" required><br>
 					External Project Name: <input type="text" name="ext_proj_name"><br>
+					Maximum Participants per Timeslot: 
+						<input type="text" name="max_participants" pattern="[0-9]{1,}" title="Integer greater than or equal to 1"><br>
 					Department:
 						<select name="dept_choice">
 							{% for dept in avail_depts %}
 								<option value="{{ dept[0] }}">{{ dept[1] }}
 							{% endfor %}
-						</select>
+						</select><br>
+					Timezone:
+						<select name="timezone">
+							{% for timezone in timezones %}
+								<option value="{{ timezone }}">{{ timezone }}
+							{% endfor %}
+						</select><br>
+					<input type="submit">
 				</form>
 		</div>
 	</div>
