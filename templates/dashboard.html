@@ -8,10 +8,10 @@
 		<div class="row justify-content-center">
 			<h2>{{ access.project.int_project_name }}</h2>
 			<h3>Available Actions:</h3>
-			<a href="/schedule/{{ access.project_id }}">Schedule Appointments</a><br>
-			<a href="/calendar/{{ access.project_id }}">View Calendar</a><br>
+			<a href="/schedule/{{ access.project_id }}" class="project_link">Schedule Appointments</a><br>
+			<a href="/calendar/{{ access.project_id }}" class="project_link">View Calendar</a><br>
 			{% if access.project_access == 'admin' %}
-				<a href="/manage/{{ access.project_id }}">Manage Project Settings</a><br>
+				<a href="/manage/{{ access.project_id }}" class="project_link">Manage Project Settings</a><br>
 			{% endif %}
 			<button type="button" class="csv_button">Download Full Schedule in CSV</button><br><br>
 
