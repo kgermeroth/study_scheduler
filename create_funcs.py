@@ -26,11 +26,13 @@ def submit_project(submission):
 
 	int_project_name = submission['int_proj_name']
 	ext_project_name = submission['ext_proj_name']
+	max_participants = int(submission['max_participants'])
 	department_id = submission['dept_choice']
 	timezone_name = submission['timezone']
 
 	project = Project(int_project_name=int_project_name,
 					  ext_project_name=ext_project_name,
+					  max_participants=max_participants,
 					  project_creator=session['user_id'],
 					  department_id=department_id,
 					  timezone_name=timezone_name,

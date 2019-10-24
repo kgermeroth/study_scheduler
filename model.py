@@ -131,6 +131,7 @@ class Project(db.Model):
 	project_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 	int_project_name = db.Column(db.String(100), nullable=False)
 	ext_project_name = db.Column(db.String(100), nullable=False)
+	max_participants = db.Column(db.Integer, nullable=False)
 	project_creator = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
 	department_id = db.Column(db.Integer, db.ForeignKey('departments.department_id'), nullable=False)
 	timezone_name = db.Column(db.String(50), db.ForeignKey('timezones.timezone_name'), nullable=False)
