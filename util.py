@@ -92,3 +92,9 @@ def check_project_access(project_id):
         return True 
     else:
         return False
+
+
+def get_project_details(project_id):
+    """Gets all project_info from project_id"""
+
+    return Project.query.filter(Project.project_id == project_id).first()
