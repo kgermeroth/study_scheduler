@@ -9,12 +9,13 @@
 			<form action="/update-project-details" method="post">
 				Internal Project Name: <input type="text" name="int_proj_name" value="{{ access.project.int_project_name }}"><br>
 				External Project Name: <input type="text" name="ext_proj_name" value="{{ access.project.ext_project_name }}"><br>
-				Max Participants: 
+				Max Participants*: 
 					<input name="max_participants" pattern="[0-9]{1,}" title="Integer greater than or equal to 1" value="{{ access.project.max_participants }}"><br>
 				<input type="text" name="project_id" value="{{ access.project_id }}" hidden>
 				<input type="submit">
 			</form>
-		</div><br><br><br>
+		</div><br><br>
+		<p>*Please note that if the number of max participants is reduced previously scheduled appointments may exceed the new maximum. It is recommended to export the full schedule and review for conflicts</p>
 		Other Actions:<br>
 			<a href="/details/{{ access.project_id }}">Project Details</a><br>
 			<a href="/timeslots/{{ access.project_id }}">Project Timeslots</a><br><br>
