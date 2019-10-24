@@ -6,7 +6,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from model import *
 
 import os
-import register_funcs, util, create_funcs
+import register_funcs, util, create_funcs, update_project_funcs
 
 app = Flask(__name__)
 
@@ -172,6 +172,21 @@ def display_details_page(project_id):
 		return redirect('/')
 
 	return render_template('details.html', access=access)
+
+
+@app.route('/update-project-details', methods=['POST'])
+def update_project_details():
+	"""Takes form submission and updates project details"""
+
+	submission = request.form
+
+	update_project_funcs.submit_project_updates(submission)
+
+	flash('Your project details have been updated!')
+
+	redirect_addy = '/details/' + str(submission['project_id'])
+
+	return redirect(redirect_addy)
 
 if __name__ == '__main__':
 
