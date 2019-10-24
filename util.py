@@ -65,12 +65,6 @@ def get_user_departments():
     return avail_departments
 
 
-def set_session_project_id(project_id):
-    """Sets session['project_id']"""
-
-    session['proj_id'] = project_id
-
-
 def get_users_projects():
     """Gets a list of all of a users projects
 
@@ -86,4 +80,15 @@ def get_users_projects():
     return proj_list
 
 
+def check_project_access(project_id):
+    """Checks to see if user has any access (any level) to project
 
+    Returns true/false"""
+
+    access = Project_Access.query.filter(Project_Access.user_id == session['user_id'],
+                                         Project_Access.project_id == project_id).first() 
+
+    if access:
+        return True 
+    else:
+        return False
