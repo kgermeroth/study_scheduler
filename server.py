@@ -133,6 +133,19 @@ def create_project():
 	return redirect('/')
 
 
+@app.route('/project/<project_id>')
+def display_project_dashboard(project_id):
+	"""Displays a project_dashboard for each project"""
+
+	access = util.check_project_access(project_id)
+	# check to see if a user even has rights, if not, return user to home
+	if access is None:
+		flash('You do not have access to that project.')
+		return redirect('/')
+
+	project_info = util.get_project_details(project_id)
+
+	return render_template('dashboard.html', project_info=project_info, access=access)
 
 if __name__ == '__main__':
 

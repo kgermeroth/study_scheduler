@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div class="container">
+		<div class="row justify-content-center">
+				<h1>Project Dashboard</h1>
+		</div>
+		<div class="row justify-content-center">
+			<h2>{{ project_info.int_project_name }}</h2>
+			<h3>Available Actions:</h3>
+			<a href="/schedule/{{ project_info.project_id }}">Schedule Appointments</a><br>
+			<a href="/calendar/{{ project_info.project_id }}">View Calendar</a><br>
+			{% if access.project_access == 'admin' %}
+				<a href="/manage/{{ project_info.project_id }}">Manage Project Settings</a><br>
+			{% endif %}
+			<button type="button" class="csv_button">Download Full Schedule in CSV</button><br><br>
+
+			<h3>Today's Appointments:</h3>
+				<p>(a one day view of the calendar will go here)</p>
+
+	</div>
+
+
+{% endblock %}
