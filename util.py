@@ -83,15 +83,12 @@ def get_users_projects():
 def check_project_access(project_id):
     """Checks to see if user has any access (any level) to project
 
-    Returns true/false"""
+    Returns object/None"""
 
     access = Project_Access.query.filter(Project_Access.user_id == session['user_id'],
                                          Project_Access.project_id == project_id).first() 
 
-    if access:
-        return True 
-    else:
-        return False
+    return access
 
 
 def get_project_details(project_id):
