@@ -143,9 +143,20 @@ def display_project_dashboard(project_id):
 		flash('You do not have access to that project.')
 		return redirect('/')
 
-	project_info = util.get_project_details(project_id)
+	return render_template('dashboard.html', access=access)
 
-	return render_template('dashboard.html', project_info=project_info, access=access)
+
+@app.route('/manage/<project_id>')
+def display_manage_project_page(project_id):
+	"""Displays the manage project page"""
+
+	access = util.check_project_access(project_id)
+	# check to see if a user even has rights, if not, return user to home
+	if (access is None) or (access.project_access != 'admin'):
+		flash('You do not have access to this page.')
+		return redirect('/')
+
+	return render_template('manage.html', access=access)
 
 if __name__ == '__main__':
 
