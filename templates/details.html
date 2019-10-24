@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div class="container">
+		<div class="row justify-content-center">
+				<h1>Update Project Details For: {{ access.project.int_project_name }}</h1>
+		</div>
+		<div class="row justify-content-center">
+			<form action="/update-project-details" method="post">
+				Internal Project Name: <input type="text" name="int_proj_name" value="{{ access.project.int_project_name }}"><br>
+				External Project Name: <input type="text" name="ext_proj_name" value="{{ access.project.ext_project_name }}"><br>
+				Max Participants: 
+					<input name="max_participants" pattern="[0-9]{1,}" title="Integer greater than or equal to 1" value="{{ access.project.max_participants }}">
+				<input type="submit">
+			</form>
+
+		</div><br><br><br>
+
+	</div>
+
+
+{% endblock %}

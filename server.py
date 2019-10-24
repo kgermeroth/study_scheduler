@@ -151,12 +151,27 @@ def display_manage_project_page(project_id):
 	"""Displays the manage project page"""
 
 	access = util.check_project_access(project_id)
+
 	# check to see if a user even has rights, if not, return user to home
 	if (access is None) or (access.project_access != 'admin'):
 		flash('You do not have access to this page.')
 		return redirect('/')
 
 	return render_template('manage.html', access=access)
+
+
+@app.route('/details/<project_id>')
+def display_details_page(project_id):
+	"""Displays the project details page"""
+
+	access = util.check_project_access(project_id)
+
+	# check to see if a user even has rights, if not, return user to home
+	if (access is None) or (access.project_access != 'admin'):
+		flash('You do not have access to this page.')
+		return redirect('/')
+
+	return render_template('details.html', access=access)
 
 if __name__ == '__main__':
 
