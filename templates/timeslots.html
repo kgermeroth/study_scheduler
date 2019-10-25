@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div class="container">
+		<div class="row justify-content-center">
+				<h1>Add/Remove Timeslots* For: {{ access.project.int_project_name }}</h1>
+		</div>
+		<div class="row justify-content-center">
+			<h2>Add a new timeslot</h2>
+			<form>
+				<div name="start">
+					Start: 
+					<select name="start_hour">
+						{% for hour in times[0] %}
+							<option value="{{ hour }}">{{ hour }}</option>
+						{% endfor %}
+					</select><span> : </span>
+					<select name="start_minute">
+						{% for minute in times[1] %}
+							<option value="{{ minute }}">{{ minute }}</option>
+						{% endfor %}
+					</select><span> </span>
+					<select name="AM_PM">
+						{% for tod in times[2] %}
+							<option value="{{ tod }}">{{ tod }}</option>
+						{% endfor %}
+					</select>
+				</div><br>
+				<div name="end">
+					End: 
+					<select name="end_hour">
+						{% for hour in times[0] %}
+							<option value="{{ hour }}">{{ hour }}</option>
+						{% endfor %}
+					</select><span> : </span>
+					<select name="end_minute">
+						{% for minute in times[1] %}
+							<option value="{{ minute }}">{{ minute }}</option>
+						{% endfor %}
+					</select><span> </span>
+					<select name="AM_PM">
+						{% for tod in times[2] %}
+							<option value="{{ tod }}">{{ tod }}</option>
+						{% endfor %}
+					</select>
+				</div><br>
+
+
+				<input type="submit">
+			</form>
+
+		<p>*Timeslots are in the {{ access.project.timezone_name }} timezone.</p>
+		</div><br>
+
+			<a href="/details/{{ access.project_id }}">Project Details</a><br>
+			<a href="/users/{{ access.project_id }}">Manage Users</a><br><br>
+			<a href="/project/{{ access.project_id }}">Return to Project Dashboard</a>
+
+	</div>
+
+
+{% endblock %}

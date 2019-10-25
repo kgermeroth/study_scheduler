@@ -202,6 +202,8 @@ def display_timeslots_page(project_id):
 
 	times = update_project_funcs.package_time_info()
 
+	existing_times = update_project_funcs.get_existing_timeslots(project_id)
+
 	return render_template('timeslots.html', access=access, times=times)
 
 if __name__ == '__main__':
