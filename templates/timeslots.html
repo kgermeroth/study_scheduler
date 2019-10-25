@@ -50,7 +50,7 @@
 
 			<h2>Existing timeslots</h2>
 			{% if existing_times %}
-				<form action="/delete-timezone" method="post">
+				<form action="/delete-timeslot" method="post">
 					<table>
 						<tr>
 							<th>Timezone</th>
@@ -63,7 +63,8 @@
 							</tr>
 						{% endfor %}
 					</table>
-					<button type="button">Delete Selected Timeslots</button>
+					<input type="text" name="project_id" value="{{ access.project_id }}" hidden>
+					<input type="submit" value="Delete Selected">
 				</form>
 			{% else %}
 				<h3 class="subtle_headline">There are no existing timeslots</h3>

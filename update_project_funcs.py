@@ -47,3 +47,15 @@ def submit_new_timeslot(submission):
 
 	db.session.add(new_time)
 	db.session.commit()
+
+
+def delete_timeslots(submission):
+	"""Deletes selected timeslots from database"""
+
+	to_delete = [int(timeslot) for timeslot in submission.getlist('delete_timeslot')]
+
+	for timeslot in to_delete:
+		timeslot = Project_Times.query.filter(Project_Times.time_id == timeslot).first()
+
+		db.session.delete(timeslot)
+		db.session.commit()

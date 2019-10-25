@@ -222,6 +222,19 @@ def submit_timeslot():
 	return redirect(redirect_addy)	
 
 
+@app.route('/delete-timeslot', methods=['POST'])
+def delete_timeslot():
+	""""Deletes appropriate timeslots"""
+
+	submission = request.form
+
+	update_project_funcs.delete_timeslots(submission)
+
+	flash('Your timeslots have been deleted.')
+
+	redirect_addy = '/timeslots/' + str(submission['project_id'])
+
+	return redirect(redirect_addy)	
 
 if __name__ == '__main__':
 
