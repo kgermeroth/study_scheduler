@@ -7,9 +7,13 @@
 		</div>
 		<div class="row justify-content-center">
 				<h2>Available Projects</h2>
-				{% for proj in proj_list %}
-					<a href="/project/{{ proj[0] }}" class="project_link">{{ proj[1] }}</a><br>
-				{% endfor %}
+				{% if proj_list %}
+					{% for proj in proj_list %}
+						<a href="/project/{{ proj[0] }}" class="project_link">{{ proj[1] }}</a><br>
+					{% endfor %}
+				{% else %}
+					<h3 class="subtle_headline">There are no existing projects</h3>
+				{% endif %}
 		</div><br><br><br>
 		Create new projects <a href="/create">here</a>.
 	</div>
