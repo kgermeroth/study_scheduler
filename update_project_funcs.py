@@ -18,6 +18,7 @@ def submit_project_updates(submission):
 	db.session.add(project)
 	db.session.commit()
 
+######### Functions for timeslots page ##############
 
 def package_time_info():
 	"""Returns a list of time information. 
@@ -59,3 +60,42 @@ def delete_timeslots(submission):
 
 		db.session.delete(timeslot)
 		db.session.commit()
+
+######### Functions for users page ##############
+
+def get_users_in_dept(dept_id):
+	"""Returns a list of all users in a given department"""
+
+	return Dept_Access.query.filter(Dept_Access.department_id == dept_id).all()
+
+
+def get_users_for_project(proj_id):
+	"""Returns a list of Proj_Access objects who have access to project"""
+
+	return Project_Access.query.filter(Project_Access.project_id == project_id).all()
+
+
+def get_user_info(proj_id):
+	"""Returns a tuple of users who can be added, and users who are already in place
+
+	(avail_dept_users ((list of dept_access objects), proj_users ((list of project_access objects)) )"""
+
+	proj_users = get_users_for_project(proj_id)
+
+	dept_users = get_users_in_dept(proj_users[0].projects.department_id)
+
+	proj_users_set = set()
+
+	for user in proj_users:
+		proj_users_set.add(user.user_id)
+
+	avail_dept_users = []
+
+	for user in dept_users:
+		if user.user_id not in proj_users_set:
+			avail_dept_users.append(user)
+
+	return (avail_dept_users, proj_users)
+
+
+
