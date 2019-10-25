@@ -1,3 +1,7 @@
+"""These are all functions that pertain to all actions that can be taken from the manage screen.
+
+Includes: updating project details, setting and deleting timeslots, and managing users"""
+
 from model import *
 
 def submit_project_updates(submission):
@@ -13,3 +17,21 @@ def submit_project_updates(submission):
 
 	db.session.add(project)
 	db.session.commit()
+
+
+def package_time_info():
+	"""Returns a list of time information. 
+
+	format = [[hours], [minutes], [AM, PM]]"""
+
+	hours = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+	minutes = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55']
+	tod = ['AM', 'PM']
+
+	return [hours, minutes, tod]
+
+
+def get_existing_timeslots(project_id):
+	"""Gets a list of existing timeslots"""
+
+	return Project_Times.query.filter(Project_Times.project_id == project_id).all() 
