@@ -188,6 +188,22 @@ def update_project_details():
 
 	return redirect(redirect_addy)
 
+
+@app.route('/timeslots/<project_id>')
+def display_timeslots_page(project_id):
+	"""Displays timeslots management page"""
+
+	access = util.check_project_access(project_id)
+
+	# check to see if a user even has rights, if not, return user to home
+	if (access is None) or (access.project_access != 'admin'):
+		flash('You do not have access to this page.')
+		return redirect('/')
+
+	times = update_project_funcs.package_time_info()
+
+	return render_template('timeslots.html', access=access, times=times)
+
 if __name__ == '__main__':
 
     app.debug = True
