@@ -204,7 +204,24 @@ def display_timeslots_page(project_id):
 
 	existing_times = update_project_funcs.get_existing_timeslots(project_id)
 
-	return render_template('timeslots.html', access=access, times=times)
+	return render_template('timeslots.html', access=access, times=times, existing_times=existing_times)
+
+
+@app.route('/submit-timeslot', methods=['POST'])
+def submit_timeslot():
+	"""Take user input and add timeslot to the database"""
+
+	submission = request.form
+
+	update_project_funcs.submit_new_timeslot(submission)
+
+	flash('Your timeslot has been added.')
+
+	redirect_addy = '/timeslots/' + str(submission['project_id'])
+
+	return redirect(redirect_addy)	
+
+
 
 if __name__ == '__main__':
 

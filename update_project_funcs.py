@@ -35,3 +35,15 @@ def get_existing_timeslots(project_id):
 	"""Gets a list of existing timeslots"""
 
 	return Project_Times.query.filter(Project_Times.project_id == project_id).all() 
+
+
+def submit_new_timeslot(submission):
+	"""Takes user submission and add new timeslot to the database"""
+
+	start = submission['start_hour'] + ":" + submission['start_minute'] + " " + submission['start_AM_PM']
+	end = submission['end_hour'] + ":" + submission['end_minute'] + " " + submission['end_AM_PM']
+
+	new_time = Project_Times(project_id=submission['project_id'], start_time=start, end_time=end)
+
+	db.session.add(new_time)
+	db.session.commit()

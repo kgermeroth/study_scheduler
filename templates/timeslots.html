@@ -7,7 +7,7 @@
 		</div>
 		<div class="row justify-content-center">
 			<h2>Add a new timeslot</h2>
-			<form>
+			<form action="/submit-timeslot" method="post">
 				<div name="start">
 					Start: 
 					<select name="start_hour">
@@ -20,7 +20,7 @@
 							<option value="{{ minute }}">{{ minute }}</option>
 						{% endfor %}
 					</select><span> </span>
-					<select name="AM_PM">
+					<select name="start_AM_PM">
 						{% for tod in times[2] %}
 							<option value="{{ tod }}">{{ tod }}</option>
 						{% endfor %}
@@ -38,19 +38,19 @@
 							<option value="{{ minute }}">{{ minute }}</option>
 						{% endfor %}
 					</select><span> </span>
-					<select name="AM_PM">
+					<select name="end_AM_PM">
 						{% for tod in times[2] %}
 							<option value="{{ tod }}">{{ tod }}</option>
 						{% endfor %}
 					</select>
 				</div><br>
-				<input type="text" value="{{ access.project_id }}" hidden>
+				<input type="text" name="project_id" value="{{ access.project_id }}" hidden>
 				<input type="submit">
 			</form><br>
 
 			<h2>Existing timeslots</h2>
 			{% if existing_times %}
-				<form action="\delete-timezone" method="post">
+				<form action="/delete-timezone" method="post">
 					<table>
 						<tr>
 							<th>Timezone</th>
@@ -58,7 +58,7 @@
 						</tr>
 						{% for slot in existing_times %}
 							<tr>
-								<td>{{ slot.start }} - {{ slot.end }}</td>
+								<td>{{ slot.start_time }} - {{ slot.end_time }}</td>
 								<td><input type="checkbox" name="delete_timeslot" value="{{ slot.time_id }}"></td>
 							</tr>
 						{% endfor %}
@@ -66,7 +66,7 @@
 					<button type="button">Delete Selected Timeslots</button>
 				</form>
 			{% else %}
-				<h3>There are no existing timeslots</h3>
+				<h3 class="subtle_headline">There are no existing timeslots</h3>
 			{% endif %}
 
 		<p>*Timeslots are in the {{ access.project.timezone_name }} timezone.</p>
