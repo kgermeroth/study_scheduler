@@ -50,8 +50,8 @@ class User(db.Model):
 	active = db.Column(db.Boolean, nullable=False)
 
 	# relationships:
-	projects = db.relationship('Project_Access')
-	departments = db.relationship('Dept_Access')
+	projects = db.relationship('Project_Access', backref="user_info")
+	departments = db.relationship('Dept_Access', backref="user_info")
 	institution = db.relationship('Instit_Access')
 
 	def __repr__(self):
