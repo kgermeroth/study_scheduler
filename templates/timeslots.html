@@ -44,10 +44,30 @@
 						{% endfor %}
 					</select>
 				</div><br>
-
-
+				<input type="text" value="{{ access.project_id }}" hidden>
 				<input type="submit">
-			</form>
+			</form><br>
+
+			<h2>Existing timeslots</h2>
+			{% if existing_times %}
+				<form action="\delete-timezone" method="post">
+					<table>
+						<tr>
+							<th>Timezone</th>
+							<th>Delete</th>
+						</tr>
+						{% for slot in existing_times %}
+							<tr>
+								<td>{{ slot.start }} - {{ slot.end }}</td>
+								<td><input type="checkbox" name="delete_timeslot" value="{{ slot.time_id }}"></td>
+							</tr>
+						{% endfor %}
+					</table>
+					<button type="button">Delete Selected Timeslots</button>
+				</form>
+			{% else %}
+				<h3>There are no existing timeslots</h3>
+			{% endif %}
 
 		<p>*Timeslots are in the {{ access.project.timezone_name }} timezone.</p>
 		</div><br>
