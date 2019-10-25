@@ -236,6 +236,45 @@ def delete_timeslot():
 
 	return redirect(redirect_addy)	
 
+
+@app.route('/users/<project_id>')
+def display_users_page(project_id):
+	"""Display users page"""
+
+	access = util.check_project_access(project_id)
+
+	# check to see if a user even has rights, if not, return user to home
+	if (access is None) or (access.project_access != 'admin'):
+		flash('You do not have access to this page.')
+		return redirect('/')
+
+	avail_dept_users, proj_users = update_project_funcs.get_user_info(project_id)
+
+	levels = ['view-only', 'edit', 'admin']
+
+	return render_template('users.html', 
+						   access=access, 
+						   dept_users=avail_dept_users, 
+						   proj_users=proj_users,
+						   levels=levels)	
+
+
+@app.route('/add-user', methods=["POST"])
+def add_user_to_project():
+	"""Adds a user to a project with correct permissions"""
+
+	submission = request.form
+
+	update_project_funcs.add_user_to_project(submission)
+
+	flash('User has been added to the project.')
+
+	redirect_addy = '/users/' + str(submission['project_id'])
+
+	return redirect(redirect_addy)	
+
+
+
 if __name__ == '__main__':
 
     app.debug = True

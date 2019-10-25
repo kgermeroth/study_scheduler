@@ -72,7 +72,7 @@ def get_users_in_dept(dept_id):
 def get_users_for_project(proj_id):
 	"""Returns a list of Proj_Access objects who have access to project"""
 
-	return Project_Access.query.filter(Project_Access.project_id == project_id).all()
+	return Project_Access.query.filter(Project_Access.project_id == proj_id).all()
 
 
 def get_user_info(proj_id):
@@ -82,7 +82,7 @@ def get_user_info(proj_id):
 
 	proj_users = get_users_for_project(proj_id)
 
-	dept_users = get_users_in_dept(proj_users[0].projects.department_id)
+	dept_users = get_users_in_dept(proj_users[0].project.department_id)
 
 	proj_users_set = set()
 
@@ -96,6 +96,19 @@ def get_user_info(proj_id):
 			avail_dept_users.append(user)
 
 	return (avail_dept_users, proj_users)
+
+
+def add_user_to_project(submission):
+	"""Takes provided information and adds user to the project"""
+
+	project_id = int(submission['project_id'])
+	user_id = int(submission['new_user'])
+	access = submission['access_level']
+
+	new_user = Project_Access(project_id=project_id, user_id=user_id, project_access=access)
+
+	db.session.add(new_user)
+	db.session.commit()
 
 
 

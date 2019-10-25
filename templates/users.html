@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div class="container">
+		<div class="row justify-content-center">
+				<h1>Add/Remove Users For: {{ access.project.int_project_name }}</h1>
+		</div>
+		<div class="row justify-content-center">
+			<h2>Add Users to Project</h2>
+			{% if dept_users %}
+				<form action="/add-user" method="post">
+					User to Add:
+					<select name="new_user">
+						{% for user in dept_users %}
+							<option value="{{ user.user_id }}">{{ user.user_info.first_name }} {{ user.user_info.last_name }}</option>
+						{% endfor %}
+					</select><br>
+					Access Level:
+					<select name="access_level">
+						{% for level in levels %}
+						<option value="{{ level }}">{{ level }}</option>
+						{% endfor %}
+					</select><br>					
+					<input type="text" name="project_id" value="{{ access.project_id }}" hidden>
+					<input type="submit">
+				</form><br>
+			{% else %}
+				<h3 class="subtle_headline">There are no users to add</h3>
+			{% endif %}
+
+			<h2>Current Users</h2>
+
+		</div><br>
+
+			<a href="/details/{{ access.project_id }}">Project Details</a><br>
+			<a href="/timeslots/{{ access.project_id }}">Project Timeslots</a><br><br>
+			<a href="/project/{{ access.project_id }}">Return to Project Dashboard</a>
+
+	</div>
+
+
+{% endblock %}
