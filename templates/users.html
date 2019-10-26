@@ -29,6 +29,38 @@
 			{% endif %}
 
 			<h2>Current Users</h2>
+			<form action="/change-users" method="post">
+				<table>
+					<tr>
+						<th>User Name</th>
+						<th hidden>user_id</th>
+						<th>View</th>
+						<th>Edit</th>
+						<th>Admin</th>
+						<th>Remove Access</th>
+					</tr>
+					{% for user in proj_users %}
+						<tr>
+							<td>{{ user.user_info.first_name }} {{ user.user_info.last_name }}</td>
+							<td hidden><input type="text" name="user_id" value="{{ user.user_id }}"></td>
+							<td><input type="radio" name="access_level{{ user.user_id }}" value="view"
+								{{ "checked" if user.project_access == 'view' else '' }}></td>
+							<td><input type="radio" name="access_level{{ user.user_id }}" value="edit"
+								{{ "checked" if user.project_access == 'edit' else '' }}></td>
+							<td><input type="radio" name="access_level{{ user.user_id }}" value="admin"
+								{{ "checked" if user.project_access == 'admin' else '' }}	></td>
+							<td><input type="checkbox" name="remove_access{{ user.user_id }}" value="remove_access"></td>
+						</tr>
+					{% endfor %}
+				</table>
+				<input type="text" name="project_id" value="{{ access.project_id }}" hidden>
+				<input type="submit" value="Make Updates">
+				</form><br><br>
+
+		<h3>Definition of Project Access Levels:</h3>
+		<p><b>View:</b> 'View' users can only view a participant's schedule or the project schedule and may export both.</p>
+		<p><b>Edit:</b> 'Edit' users can schedule participant's in addition to 'view' access rights. </p>
+		<p><b>Admin:</b> Admins can add users to a project, update project details, and change project timeslots in addition to 'view' and 'edit' rights.</p>
 
 		</div><br>
 

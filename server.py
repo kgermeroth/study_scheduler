@@ -250,7 +250,7 @@ def display_users_page(project_id):
 
 	avail_dept_users, proj_users = update_project_funcs.get_user_info(project_id)
 
-	levels = ['view-only', 'edit', 'admin']
+	levels = ['view', 'edit', 'admin']
 
 	return render_template('users.html', 
 						   access=access, 
@@ -274,6 +274,19 @@ def add_user_to_project():
 	return redirect(redirect_addy)	
 
 
+@app.route('/change-users', methods=["POST"])
+def process_user_changes():
+	"""Makes changes to project_access"""
+
+	submission = request.form
+
+	update_project_funcs.process_user_changes(submission)
+
+	flash('User changes have been updated')
+
+	redirect_addy = '/users/' + str(submission['project_id'])
+
+	return redirect(redirect_addy)	
 
 if __name__ == '__main__':
 

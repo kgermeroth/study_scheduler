@@ -111,4 +111,61 @@ def add_user_to_project(submission):
 	db.session.commit()
 
 
+def process_user_changes(submission):
+	"""Takes changes to user and process them"""
+
+	user_changes = parse_data(submission)
+
+	for user in user_changes:
+		proj_user = Project_Access.query.filter(Project_Access.user_id == user).one()
+
+		# check to see if user should be deleted first and if yes, delete the user
+		if user_changes[user]['remove']:
+			db.session.delete(proj_user)
+
+		# otherwise process the changes
+		else:
+			proj_user.project_access = user_changes[user]['access']
+			db.session.add(proj_user)
+
+		db.session.commit()
+
+
+def parse_data(submission):
+	"""Takes the submission and parses out to match submissions with user_id
+	returns dict with following format: 
+		{'user_id' : {'access':access, 'remove':False}}"""
+
+	users = submission.getlist('user_id')
+
+	user_actions = {}
+
+	for user in users:
+		actions = {}
+
+		# each key is the name followed by user_id, need to look up those specific keys
+
+		# start with access level
+		key = 'access_level' + user
+
+		access = submission[key]
+
+		actions['access'] = access
+
+		# next with removal, but if a user is not being removed it will not appear
+
+		try:
+			key = 'remove_access' + user
+
+			removal = submission[key]
+
+			actions['remove'] = True
+		except:
+			actions['remove'] = False
+
+		user_actions[int(user)] = actions
+
+	return user_actions
+
+
 
