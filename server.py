@@ -318,6 +318,22 @@ def reroute_to_schedule_pg():
 	return redirect(redirect_addy)
 
 
+@app.route('/schedule/<project_id>/<participant_id')
+def display_part_scheduling_page(project_id, participant_id):
+	"""Displays scheduling page"""
+
+	access = util.check_project_access(project_id)
+
+	# check to see if a user even has rights, if not, return user to home
+	if access is None:
+		flash('You do not have access to this page.')
+		return redirect('/')
+
+	frequencies = util.get_frequencies(project_id)
+
+	return render_template('schedule_page.html', access=access, frequencies=frequencies)
+
+
 
 if __name__ == '__main__':
 

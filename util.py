@@ -90,3 +90,10 @@ def check_project_access(project_id):
 
     return access
 
+
+def get_frequencies(project_id):
+    """Returns a list of frequencies"""
+
+    frequencies = Frequency.query.all()
+
+    return [frequency.frequency for frequency in frequencies]
