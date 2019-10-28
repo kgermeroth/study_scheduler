@@ -300,7 +300,22 @@ def display_schedule_homepage(project_id):
 		flash('You do not have access to this page.')
 		return redirect('/')
 
-	return render_template('schedule_home.html')
+	return render_template('schedule_home.html', access=access)
+
+
+@app.route('/schedule-appt')
+def reroute_to_schedule_pg():
+	"""Routes user to appropriate scheduling page"""
+
+	submission = request.args
+
+	print(submission)
+
+	redirect_addy = '/schedule/' + str(submission['project_id']) + '/' + submission['participant_id']
+
+	return redirect(redirect_addy)
+
+
 
 if __name__ == '__main__':
 

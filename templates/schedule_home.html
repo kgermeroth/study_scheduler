@@ -7,7 +7,8 @@
 		</div>
 		<div class="row justify-content-center">
 			<form action="/schedule-appt">
-				Participant ID: <input type="text" name="part_id" required><br>
+				Participant ID: <input type="text" name="participant_id" required><br>
+				<input type="input" name="project_id" value="{{ access.project_id }}" hidden>
 				<input type="submit">
 			</form>
 		</div>
