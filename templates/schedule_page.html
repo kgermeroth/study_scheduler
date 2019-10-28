@@ -15,12 +15,12 @@
 					{% else %}
 						<div class="schedule_div" id="schedule_1">
 							Schedule: 
-							<select name="frequency">
+							<select name="frequency" class="frequency">
 								{% for frequency in frequencies %}
 									<option value="{{ frequency }}">{{ frequency }}</option>
 								{% endfor %}
 							</select>
-							Starting on: <input type="date" name="starting_on">
+							starting on: <input type="date" name="starting_on">
 							<span class="repeat_in"> in </span>
 							<input type="text" name="repeat_in" pattern="[0-9]{1,}" title="Integer greater than or equal to 1">
 							<span class="time_day"> days at </span>
@@ -29,6 +29,7 @@
 									<option value="{{ timeslot.start_time }} - {{ timeslot.end_time }}">{{ timeslot.start_time }} - {{ timeslot.end_time }}
 								{% endfor %}
 							</select>
+							<span id="remove_1" class="remove">remove</span>
 						</div>
 					{% endif %}
 					<div class="add">Add Time</div>
@@ -42,5 +43,26 @@
 {% endblock %}
 
 {% block js %}
+	<script>
+		const freq = document.querySelector(".frequency");
+
+		// update verbiage in between dropdowns when different frequency is chosen
+		function changeSpans() {
+			const repeatIn = document.querySelector('.repeat_in');
+			const timeDay = document.querySelector('.time_day');
+			if (freq.value === 'Once') {
+				repeatIn.innerText = ' in ';
+				timeDay.innerText = ' days at ';
+			} else {
+				repeatIn.innerText = 'repeat';
+				timeDay.innerText = ' times at ';	
+			};
+		};
+
+		freq.addEventListener('change', changeSpans);
+
+
+		
+	</script>
 
 {% endblock %}
