@@ -6,7 +6,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from model import *
 
 import os
-import register_funcs, util, create_funcs, update_project_funcs
+import register_funcs, util, create_funcs, update_project_funcs, schedule_funcs.py
 
 app = Flask(__name__)
 
@@ -331,7 +331,12 @@ def display_part_scheduling_page(project_id, participant_id):
 
 	frequencies = util.get_frequencies(project_id)
 
-	return render_template('schedule_page.html', access=access, frequencies=frequencies)
+	project_defaults = schedule_funcs.get_default_schedule(project_id)
+
+	return render_template('schedule_page.html', 
+						   access=access, 
+						   frequencies=frequencies, 
+						   project_defaults=project_defaults)
 
 
 
