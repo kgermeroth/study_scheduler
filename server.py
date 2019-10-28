@@ -6,7 +6,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from model import *
 
 import os
-import register_funcs, util, create_funcs, update_project_funcs, schedule_funcs.py
+import register_funcs, util, create_funcs, update_project_funcs, schedule_funcs
 
 app = Flask(__name__)
 
@@ -318,7 +318,7 @@ def reroute_to_schedule_pg():
 	return redirect(redirect_addy)
 
 
-@app.route('/schedule/<project_id>/<participant_id')
+@app.route('/schedule/<project_id>/<participant_id>')
 def display_part_scheduling_page(project_id, participant_id):
 	"""Displays scheduling page"""
 
