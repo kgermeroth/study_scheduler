@@ -288,6 +288,20 @@ def process_user_changes():
 
 	return redirect(redirect_addy)	
 
+
+@app.route('/schedule/<project_id>')
+def display_schedule_homepage(project_id):
+	"""Displays project homepage"""
+
+	access = util.check_project_access(project_id)
+
+	# check to see if a user even has rights, if not, return user to home
+	if access is None:
+		flash('You do not have access to this page.')
+		return redirect('/')
+
+	return render_template('schedule_home.html')
+
 if __name__ == '__main__':
 
     app.debug = True
