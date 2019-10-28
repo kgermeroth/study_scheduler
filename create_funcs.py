@@ -56,4 +56,6 @@ def add_creator_to_proj_access(submission):
 	db.session.add(access)
 	db.session.commit()
 
+	return project
+
 

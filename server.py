@@ -126,11 +126,13 @@ def create_project():
 
 	create_funcs.submit_project(submission)
 
-	create_funcs.add_creator_to_proj_access(submission)
+	project = create_funcs.add_creator_to_proj_access(submission)
 
 	flash('Your project has been created!')
 
-	return redirect('/')
+	redirect_addy = '/project/' + str(project.project_id)
+
+	return redirect(redirect_addy)
 
 
 @app.route('/project/<project_id>')
