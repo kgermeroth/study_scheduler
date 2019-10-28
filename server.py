@@ -331,11 +331,14 @@ def display_part_scheduling_page(project_id, participant_id):
 
 	frequencies = util.get_frequencies(project_id)
 
+	timeslots = schedule_funcs.get_timeslots(project_id)
+
 	project_defaults = schedule_funcs.get_default_schedule(project_id)
 
 	return render_template('schedule_page.html', 
 						   access=access, 
 						   frequencies=frequencies, 
+						   timeslots=timeslots,
 						   project_defaults=project_defaults)
 
 

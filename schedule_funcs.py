@@ -7,3 +7,9 @@ def get_default_schedule(project_id):
 
 	return Project_Default_Schedule.query.filter(Project_Default_Schedule.project_id == project_id).all()
 
+
+def get_timeslots(project_id):
+	"""Returns a list of project time objects"""
+
+	return Project_Times.query.filter(Project_Times.project_id == project_id).all()
+
