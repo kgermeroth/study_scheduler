@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div class="container">
+		<div class="row justify-content-center">
+			<h1>View/Schedule Appointments for Participant: {{ access.user_id }}</h1>
+		</div>
+		<div class="row justify-content-center">
+			<h2>Schedule Appointments</h2>
+			{% if access.project_access == 'view' %}
+				<h3 class="subtle_headline">You do not have permissions to schedule participants.</h3>
+			{% else %}
+				<form action="/check-conflicts">
+					{% if project_defaults %}
+					{% else %}
+						<div class="schedule_div" id="schedule_1">
+							Schedule: 
+							<select name="frequency">
+								{% for frequency in frequencies %}
+									<option value="{{ frequency }}">{{ frequency }}</option>
+								{% endfor %}
+							</select>
+							Starting on: <input type="date" name="starting_on">
+							<span class="repeat_in"> in </span>
+							<input type="text" name="repeat_in" pattern="[0-9]{1,}" title="Integer greater than or equal to 1">
+							<span class="time_day"> days at </span>
+							<select name="time">
+								{% for timeslot in timeslots %}
+									<option value="{{ timeslot.start_time }} - {{ timeslot.end_time }}">{{ timeslot.start_time }} - {{ timeslot.end_time }}
+								{% endfor %}
+							</select>
+						</div>
+					{% endif %}
+					<div class="add">Add Time</div>
+					<input type="input" name="project_id" value="{{ access.project_id }}" hidden>
+					<input type="submit">
+				</form>
+			{% endif %}
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}
