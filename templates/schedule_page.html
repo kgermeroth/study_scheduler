@@ -11,30 +11,34 @@
 			{% if access.project_access == 'view' %}
 				<h3 class="subtle_headline">You do not have permissions to schedule participants.</h3>
 			{% else %}
-				<form action="/check-conflicts">
+				<form action="/check-conflicts" method="POST">
 					{% if project_defaults %}
 					{% else %}
 						<div class="schedule_div" id="div_1">
-							Schedule: 
+							Schedule
 							<select name="frequency" class="frequency" id="freq_1">
 								{% for frequency in frequencies %}
 									<option value="{{ frequency }}">{{ frequency }}</option>
 								{% endfor %}
 							</select>
-							starting on: <input type="date" name="starting_on">
 							<span class="repeat_in" id="repeat_in_1"> in </span>
 							<input type="text" name="repeat_in" pattern="[0-9]{1,}" title="Integer greater than or equal to 1">
-							<span class="time_day" id="time_day_1"> days at </span>
-							<select name="time">
+							<span class="time_day" id="time_day_1"> days </span>
+							<span class="from_start" id="from_start_1"> from </span>
+							<input type="date" name="starting_on">
+							at <select name="time">
+									<option value="default_selection" selected>-- Select Timeslot --
 								{% for timeslot in timeslots %}
 									<option value="{{ timeslot.start_time }} - {{ timeslot.end_time }}">{{ timeslot.start_time }} - {{ timeslot.end_time }}
 								{% endfor %}
 							</select>
-							<span id="remove_1" class="remove">remove</span>
+							<input type="text" name="div_ids" value="1" hidden>
+							<i class="remove fas fa-trash" id="remove_1"></i>
 						</div>
 					{% endif %}
 					<div class="add">Add Time</div>
 					<input type="input" name="project_id" value="{{ access.project_id }}" hidden>
+					<input type="input" name="participant_id" value="{{ participant_id }}" hidden>
 					<input type="submit">
 				</form>
 			{% endif %}
@@ -51,12 +55,15 @@
 		freq.addEventListener('change', () => {
 			const repeatIn = document.querySelector('#repeat_in_1');
 			const timeDay = document.querySelector('#time_day_1');
+			const fromStart = document.querySelector('#from_start_1')
 			if (freq.value === 'Once') {
 				repeatIn.innerText = ' in ';
-				timeDay.innerText = ' days at ';
+				timeDay.innerText = ' days ';
+				fromStart.innerText = ' from ';
 			} else {
 				repeatIn.innerText = 'repeat';
-				timeDay.innerText = ' times at ';	
+				timeDay.innerText = ' times ';
+				fromStart.innerText = ' starting on ';	
 			};
 		});
 
@@ -72,33 +79,38 @@
 
 			// add element to <div>
 			$("#div_" + nextindex).append(
-							`Schedule: <select name='frequency' class='frequency' id='freq_${nextindex}'>
+							`Schedule <select name='frequency' class='frequency' id='freq_${nextindex}'>
 								{% for frequency in frequencies %}
 									<option value='{{ frequency }}'>{{ frequency }}</option>
 								{% endfor %}
 							</select>
-							starting on: <input type='date' name='starting_on'>
 							<span class='repeat_in' id='repeat_in_${nextindex}'> in </span>
 							<input type='text' name='repeat_in' pattern='[0-9]{1,}' title='Integer greater than or equal to 1'>
-							<span class='time_day' id='time_day_${nextindex}'> days at </span>
-							<select name='time'>
+							<span class='time_day' id='time_day_${nextindex}'> days </span>
+							<span class="from_start" id="from_start_${nextindex}"> from </span>
+							<input type='date' name='starting_on'>							
+							at <select name='time'>
+								<option value="default_selection" selected>-- Select Timeslot --
 								{% for timeslot in timeslots %}
 									<option value='{{ timeslot.start_time }} - {{ timeslot.end_time }}'>{{ timeslot.start_time }} - {{ timeslot.end_time }}
 								{% endfor %}
 							</select>
-							<span id='remove_${nextindex}' class='remove'>remove</span>`);
+							<i class="remove fas fa-trash" id='remove_${nextindex}'></i>`);
 
 			// add event listener and function to each new div so text in between dropdowns changes when frequency is changed
 			const freq1 = document.querySelector(`#freq_${nextindex}`);
 			freq1.addEventListener('change', () => {
 				const repeatIn = document.querySelector(`#repeat_in_${nextindex}`);
 				const timeDay = document.querySelector(`#time_day_${nextindex}`);
+				const fromStart = document.querySelector(`#from_start_${nextindex}`);
 				if (freq1.value === 'Once') {
 					repeatIn.innerText = ' in ';
-					timeDay.innerText = ' days at ';
+					timeDay.innerText = ' days ';
+					fromStart.innerText = ' from ';
 				} else {
 					repeatIn.innerText = 'repeat';
-					timeDay.innerText = ' times at ';	
+					timeDay.innerText = ' times ';	
+					fromStart.innerText = ' starting on ';	
 				};
 			});
 		});
