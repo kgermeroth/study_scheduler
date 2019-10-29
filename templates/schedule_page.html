@@ -13,17 +13,17 @@
 				<form action="/check-conflicts">
 					{% if project_defaults %}
 					{% else %}
-						<div class="schedule_div" id="schedule_1">
+						<div class="schedule_div" id="div_1">
 							Schedule: 
-							<select name="frequency" class="frequency">
+							<select name="frequency" class="frequency" id="freq_1">
 								{% for frequency in frequencies %}
 									<option value="{{ frequency }}">{{ frequency }}</option>
 								{% endfor %}
 							</select>
 							starting on: <input type="date" name="starting_on">
-							<span class="repeat_in"> in </span>
+							<span class="repeat_in" id="repeat_in_1"> in </span>
 							<input type="text" name="repeat_in" pattern="[0-9]{1,}" title="Integer greater than or equal to 1">
-							<span class="time_day"> days at </span>
+							<span class="time_day" id="time_day_1"> days at </span>
 							<select name="time">
 								{% for timeslot in timeslots %}
 									<option value="{{ timeslot.start_time }} - {{ timeslot.end_time }}">{{ timeslot.start_time }} - {{ timeslot.end_time }}
@@ -44,12 +44,12 @@
 
 {% block js %}
 	<script>
-		const freq = document.querySelector(".frequency");
+		const freq = document.querySelector("#freq_1");
 
 		// update verbiage in between dropdowns when different frequency is chosen
-		function changeSpans() {
-			const repeatIn = document.querySelector('.repeat_in');
-			const timeDay = document.querySelector('.time_day');
+		freq.addEventListener('change', () => {
+			const repeatIn = document.querySelector('#repeat_in_1');
+			const timeDay = document.querySelector('#time_day_1');
 			if (freq.value === 'Once') {
 				repeatIn.innerText = ' in ';
 				timeDay.innerText = ' days at ';
@@ -57,9 +57,50 @@
 				repeatIn.innerText = 'repeat';
 				timeDay.innerText = ' times at ';	
 			};
-		};
+		});
 
-		freq.addEventListener('change', changeSpans);
+		$('.add').click(() => {
+
+			// get last <div> with element class id and calculate the next item id
+			const lastid = $('.schedule_div:last').attr('id');
+			const splitid = lastid.split('_');
+			const nextindex = Number(splitid[1]) + 1;
+
+			// add new div container after last occurance of element class
+			$('.schedule_div:last').after("<div class='schedule_div' id='div_" + nextindex + "'></div>");
+
+			// add element to <div>
+			$("#div_" + nextindex).append(
+							`Schedule: <select name='frequency' class='frequency' id='freq_${nextindex}'>
+								{% for frequency in frequencies %}
+									<option value='{{ frequency }}'>{{ frequency }}</option>
+								{% endfor %}
+							</select>
+							starting on: <input type='date' name='starting_on'>
+							<span class='repeat_in' id='repeat_in_${nextindex}'> in </span>
+							<input type='text' name='repeat_in' pattern='[0-9]{1,}' title='Integer greater than or equal to 1'>
+							<span class='time_day' id='time_day_${nextindex}'> days at </span>
+							<select name='time'>
+								{% for timeslot in timeslots %}
+									<option value='{{ timeslot.start_time }} - {{ timeslot.end_time }}'>{{ timeslot.start_time }} - {{ timeslot.end_time }}
+								{% endfor %}
+							</select>
+							<span id='remove_${nextindex}' class='remove'>remove</span>`);
+
+			// add event listener and function to 
+			const freq1 = document.querySelector(`#freq_${nextindex}`);
+			freq1.addEventListener('change', () => {
+				const repeatIn = document.querySelector(`#repeat_in_${nextindex}`);
+				const timeDay = document.querySelector(`#time_day_${nextindex}`);
+				if (freq1.value === 'Once') {
+					repeatIn.innerText = ' in ';
+					timeDay.innerText = ' days at ';
+				} else {
+					repeatIn.innerText = 'repeat';
+					timeDay.innerText = ' times at ';	
+				};
+			});
+		});
 
 
 		
