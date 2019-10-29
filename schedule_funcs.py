@@ -1,7 +1,7 @@
 """This file contains all functions relating to scheduling participants"""
 
 from model import *
-from datetime import datetime
+from datetime import datetime, timedelta
 
 def get_default_schedule(project_id):
 	"""Returns a list of project schedule objects for a project (default schedule)"""
@@ -54,6 +54,7 @@ def parse_timeframes_from_submission(submission):
 		timeframe_dict['start_date'] = start_datetime
 
 		# calculate end date (in case it goes around the clock)
+		timeframe_dict['end_date'] = calculate_end_datetime(start_datetime, start_time, end_time)
 
 
 
@@ -92,10 +93,25 @@ def convert_hours_military(hour, meridian):
 	return str(hour)
 
 
-def calculate_end_datetime(start_datetime, end_time):
+def calculate_end_datetime(start_datetime, start_time, end_time):
 	"""Takes start as datetime and end time as string and returns end as datetime object"""
 
-	start_hour = start_datetime.hour
+	start_hour = int(start_time[:2])
+	end_hour = int(end_time[:2])
+	end_minutes = int(end_time[-2:])
+
+	# if the end hour is greater than or equal to the start time it is the same day
+	# replace the hour and minutes in the start datetime object
+	if end_hour >= start_hour:
+		return start_datetime.replace(hour=end_hour, minute=end_minutes)
+
+	# if it's not, that means it goes into early the next day, so add one to the datetime object
+	# and then replace the hour and minutes
+	else:
+		end_date = start_datetime + timedelta(days=1)
+		return end_date.replace(hour=end_hour, minute=end_minutes)
+
+
 
 
 
