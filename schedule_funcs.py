@@ -29,7 +29,7 @@ def parse_timeframes_from_submission(submission):
 
 		# pull out frequency and add to dictionary
 		freq = 'freq_' + d
-		freq = submssion[freq]
+		freq = submission[freq]
 		timeframe_dict['freq'] = freq
 
 		# pull out repetition and add to dictionary
@@ -42,14 +42,14 @@ def parse_timeframes_from_submission(submission):
 		start_day = submission[start_day]
 
 		time = 'time_' + d
-		time = submission[d]
+		time = submission[time]
 
 		start_time, end_time = convert_to_military_time(time)
 
 		# convert start to a datetime object
 		start_datetime = start_day + 'T' + start_time
 
-		start_datetime = strptime(start_datetime, '%Y-%m-%dT%H:%M')
+		start_datetime = datetime.strptime(start_datetime, '%Y-%m-%dT%H:%M')
 
 		timeframe_dict['start_date'] = start_datetime
 
@@ -65,7 +65,7 @@ def convert_to_military_time(time):
 	"""Returns start and end time as military time
 
 	>>>'11:00 AM - 01:00 PM' 
-	(11:00, 13:00) 			"""
+	('11:00', '13:00') 			"""
 
 	start_hour = int(time[:2])
 	start_minutes = time[3:5]
@@ -73,7 +73,7 @@ def convert_to_military_time(time):
 
 	start_time = convert_hours_military(start_hour, start_meridian) + ":" + start_minutes
 
-	end_hour = int(time[-4:-6])
+	end_hour = int(time[-8:-6])
 	end_minutes = time[-5:-3]
 	end_meridian = time[-2:]
 
@@ -91,11 +91,16 @@ def convert_hours_military(hour, meridian):
 	if meridian == 'PM':
 		hour += 12
 
-	return str(hour)
+	padded_hour = '{:02}'.format(hour)
+
+	return str(padded_hour)
 
 
 def calculate_end_datetime(start_datetime, start_time, end_time):
 	"""Takes start as datetime and end time as string and returns end as datetime object"""
+
+	print('start_time', start_time)
+	print('end_time', end_time)
 
 	start_hour = int(start_time[:2])
 	end_hour = int(end_time[:2])
