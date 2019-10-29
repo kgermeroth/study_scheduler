@@ -1,6 +1,7 @@
 """This file contains all functions relating to scheduling participants"""
 
 from model import *
+from datetime import datetime
 
 def get_default_schedule(project_id):
 	"""Returns a list of project schedule objects for a project (default schedule)"""
@@ -45,6 +46,17 @@ def parse_timeframes_from_submission(submission):
 
 		start_time, end_time = convert_to_military_time(time)
 
+		# convert start to a datetime object
+		start_datetime = start_day + 'T' + start_time
+
+		start_datetime = strptime(start_datetime, '%Y-%m-%dT%H:%M')
+
+		timeframe_dict['start_date'] = start_datetime
+
+		# calculate end date (in case it goes around the clock)
+
+
+
 
 
 def convert_to_military_time(time):
@@ -78,6 +90,12 @@ def convert_hours_military(hour, meridian):
 		hour += 12
 
 	return str(hour)
+
+
+def calculate_end_datetime(start_datetime, end_time):
+	"""Takes start as datetime and end time as string and returns end as datetime object"""
+
+	start_hour = start_datetime.hour
 
 
 
