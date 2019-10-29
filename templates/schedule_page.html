@@ -16,17 +16,17 @@
 					{% else %}
 						<div class="schedule_div" id="div_1">
 							Schedule
-							<select name="frequency" class="frequency" id="freq_1">
+							<select name="freq_1" class="frequency" id="freq_1">
 								{% for frequency in frequencies %}
 									<option value="{{ frequency }}">{{ frequency }}</option>
 								{% endfor %}
 							</select>
 							<span class="repeat_in" id="repeat_in_1"> in </span>
-							<input type="text" name="repeat_in" pattern="[0-9]{1,}" title="Integer greater than or equal to 1">
+							<input type="text" name="repeat_in_1" pattern="[0-9]{1,}" title="Integer greater than or equal to 1">
 							<span class="time_day" id="time_day_1"> days </span>
 							<span class="from_start" id="from_start_1"> from </span>
-							<input type="date" name="starting_on">
-							at <select name="time">
+							<input type="date" name="starting_on_1">
+							at <select name="time_1">
 									<option value="default_selection" selected>-- Select Timeslot --
 								{% for timeslot in timeslots %}
 									<option value="{{ timeslot.start_time }} - {{ timeslot.end_time }}">{{ timeslot.start_time }} - {{ timeslot.end_time }}
@@ -79,22 +79,23 @@
 
 			// add element to <div>
 			$("#div_" + nextindex).append(
-							`Schedule <select name='frequency' class='frequency' id='freq_${nextindex}'>
+							`Schedule <select name='freq_${nextindex}' class='frequency' id='freq_${nextindex}'>
 								{% for frequency in frequencies %}
 									<option value='{{ frequency }}'>{{ frequency }}</option>
 								{% endfor %}
 							</select>
 							<span class='repeat_in' id='repeat_in_${nextindex}'> in </span>
-							<input type='text' name='repeat_in' pattern='[0-9]{1,}' title='Integer greater than or equal to 1'>
+							<input type='text' name='repeat_in_${nextindex}' pattern='[0-9]{1,}' title='Integer greater than or equal to 1'>
 							<span class='time_day' id='time_day_${nextindex}'> days </span>
 							<span class="from_start" id="from_start_${nextindex}"> from </span>
-							<input type='date' name='starting_on'>							
-							at <select name='time'>
+							<input type='date' name='starting_on_${nextindex}'>							
+							at <select name='time_${nextindex}'>
 								<option value="default_selection" selected>-- Select Timeslot --
 								{% for timeslot in timeslots %}
 									<option value='{{ timeslot.start_time }} - {{ timeslot.end_time }}'>{{ timeslot.start_time }} - {{ timeslot.end_time }}
 								{% endfor %}
 							</select>
+							<input type="text" name="div_ids" value="${nextindex}" hidden>
 							<i class="remove fas fa-trash" id='remove_${nextindex}'></i>`);
 
 			// add event listener and function to each new div so text in between dropdowns changes when frequency is changed
