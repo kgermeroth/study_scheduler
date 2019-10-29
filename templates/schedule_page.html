@@ -2,10 +2,11 @@
 
 {% block content %}
 	<div class="container">
-		<div class="row justify-content-center">
-			<h1>View/Schedule Appointments for Participant: {{ access.user_id }}</h1>
+		<div class="row justify-content-center"></div>
+			<h1>Project: {{ access.project.int_project_name }}</h1>
+			<h1>View/Schedule Appointments for Participant: {{ participant_id }}</h1>
 		</div>
-		<div class="row justify-content-center">
+		<div class="row justify-content-center" id="appt_container">
 			<h2>Schedule Appointments</h2>
 			{% if access.project_access == 'view' %}
 				<h3 class="subtle_headline">You do not have permissions to schedule participants.</h3>
@@ -87,7 +88,7 @@
 							</select>
 							<span id='remove_${nextindex}' class='remove'>remove</span>`);
 
-			// add event listener and function to 
+			// add event listener and function to each new div so text in between dropdowns changes when frequency is changed
 			const freq1 = document.querySelector(`#freq_${nextindex}`);
 			freq1.addEventListener('change', () => {
 				const repeatIn = document.querySelector(`#repeat_in_${nextindex}`);
@@ -102,6 +103,17 @@
 			});
 		});
 
+		// Remove the proper element when remove is selected
+		$('#appt_container').on('click', '.remove', (e) => {
+			const target = e.target;
+			console.log(target);
+			const id = target.id;
+			const split_id = id.split('_');
+			const delete_num = split_id[1];
+			
+			// remove div with that number
+			$('#div_' + delete_num).remove();
+		});
 
 		
 	</script>

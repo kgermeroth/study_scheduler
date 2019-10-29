@@ -337,6 +337,7 @@ def display_part_scheduling_page(project_id, participant_id):
 
 	return render_template('schedule_page.html', 
 						   access=access, 
+						   participant_id=participant_id,
 						   frequencies=frequencies, 
 						   timeslots=timeslots,
 						   project_defaults=project_defaults)
