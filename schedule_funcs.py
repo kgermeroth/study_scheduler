@@ -56,8 +56,9 @@ def parse_timeframes_from_submission(submission):
 		# calculate end date (in case it goes around the clock)
 		timeframe_dict['end_date'] = calculate_end_datetime(start_datetime, start_time, end_time)
 
+		parsed_timeframes.append(timeframe_dict)
 
-
+	return parsed_timeframes
 
 
 def convert_to_military_time(time):
