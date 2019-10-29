@@ -99,9 +99,6 @@ def convert_hours_military(hour, meridian):
 def calculate_end_datetime(start_datetime, start_time, end_time):
 	"""Takes start as datetime and end time as string and returns end as datetime object"""
 
-	print('start_time', start_time)
-	print('end_time', end_time)
-
 	start_hour = int(start_time[:2])
 	end_hour = int(end_time[:2])
 	end_minutes = int(end_time[-2:])
@@ -118,7 +115,55 @@ def calculate_end_datetime(start_datetime, start_time, end_time):
 		return end_date.replace(hour=end_hour, minute=end_minutes)
 
 
+def calculate_needed_dates(timeframes):
+	"""Takes in a list of parsed timeframes and returns a list of tuples of calculated datetime objects
+	[(start_datetime, end_datetime)]   """
 
+	calculated_dates = []
 
+	for timeframe in timeframes:
 
+		# if the event is only happening once, add the repeat_in value to the start and end dates
+		if timeframe['freq'] == 'once':
+			days = int(timeframe['repeat_in'])
+			start_date = timeframe['start_date'] + timedelta(days=days)
+			end_date = timeframe['end_date'] + timedelta(days=days)
+
+			calculated_dates.append((start_date, end_date))
+
+		# if it is daily, add starting dates to list and then add one day until correct number is reached
+		elif timeframe['freq'] == 'daily':
+			start_date = timeframe['start_date']
+			end_date = timeframe['end_date']
+
+			calculated_dates.append((start_date, end_date))
+
+			i = 1
+
+			while i < int(timeframe['repeat_in']):
+				start_date = start_date + timedelta(days=1)
+				end_date = end_date + timedelta(days=1)
+
+				calculated_dates.append((start_date, end_date))
+
+				i += 1
+
+		# else it is weekly, add starting dates to list and then add seven days until correct number is reached
+		else:
+			start_date = timeframe['start_date']
+			end_date = timeframe['end_date']
+
+			calculated_dates.append((start_date, end_date))
+
+			i = 1
+
+			while i < int(timeframe['repeat_in']):
+				start_date = start_date + timedelta(days=7)
+				end_date = end_date + timedelta(days=7)
+
+				calculated_dates.append((start_date, end_date))
+
+				i += 1
+
+	return calculated_dates
 
