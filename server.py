@@ -343,6 +343,21 @@ def display_part_scheduling_page(project_id, participant_id):
 						   project_defaults=project_defaults)
 
 
+@app.route('/check-conflicts', methods=['POST'])
+def check_date_conflicts():
+	"""Takes user input, calculates dates, and checks for conflicts"""
+
+	submission = request.form
+
+	try:
+		dates = schedule_funcs.check_conflicts_master(submission)
+
+	except:
+		raise ValueError('Not all of the fields were filled out, please try again.')
+
+	redirect_addy = '/schedule/' +str(submission['project_id']) + '/' + str(submission['participant_id'])
+
+	return redirect(redirect_addy)
 
 if __name__ == '__main__':
 
