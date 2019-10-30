@@ -2,6 +2,8 @@
 
 from model import *
 from datetime import datetime, timedelta
+from flask import session
+import pytz
 
 def get_default_schedule(project_id):
 	"""Returns a list of project schedule objects for a project (default schedule)"""
@@ -166,4 +168,53 @@ def calculate_needed_dates(timeframes):
 				i += 1
 
 	return calculated_dates
+
+
+def check_for_conflicts(calculated_dates, project_id):
+	"""Takes calculated dates and checks for conflicts
+
+	returns a tuple (no_conflict_dates, conflict_dates)"""
+
+	pass
+
+
+def check_conflicts_master(submission):
+	"""Handles all parts of checking date conflicts"""
+
+	parsed_timeframes = parse_timeframes_from_submission(submission)
+
+	calculated_dates = calculate_needed_dates(parsed_timeframes)
+
+	#@TODO check for conflicts
+
+	return calculated_dates
+
+
+def schedule_dates(project_id, participant_id, dates):
+	"""Takes a list of dates and adds them to the database"""
+
+	project = Project.query.filter(Project.project_id == project_id).one()
+
+	proj_tz = pytz.timezone(project.timezone_name)
+
+	utc = pytz.timezone('UTC')
+
+	for date in dates:
+		# localize dates
+		start_date = proj_tz.localize(date[0])
+		end_date = proj_tz.localize(date[1])
+
+		# convert dates to UTC
+		start_utc = start_date.astimezone(utc)
+		end_utc = end_date.astimezone(utc)
+
+		schedule = Participant_Schedule(
+										project_id=project_id,
+										participant_id=participant_id,
+										start=start_utc,
+										end=end_utc,
+										scheduled_by=session['user_id'])
+
+		db.session.add(schedule)
+		db.session.commit()
 
