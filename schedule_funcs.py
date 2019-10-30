@@ -171,9 +171,58 @@ def calculate_needed_dates(timeframes):
 
 
 def check_for_conflicts(calculated_dates, project_id):
-	"""Takes calculated dates and checks for conflicts
+	"""Takes calculated dates (list of tuple(start,end) and checks for conflicts
 
 	returns a tuple (no_conflict_dates, conflict_dates)"""
+
+	no_conflict_dates = []
+	conflict_dates = []
+
+	project = Project.query.filter(Project.project_id == project_id).one()
+
+	max_participants = project.max_participants
+
+	tz = pytz.timezone(project.timezone_name)
+	utc = pytz.timezone('UTC')
+
+	for date in calculated_dates:
+		start = date[0]
+		end = date[1]
+
+		# convert to timezone and localize 
+		start = tz.localize(start)
+		end = tz.localize(end)
+		
+		# convert to utc for comparison purposes
+		start_utc = start.astimezone(utc)
+		end_utc = end.astimezone(utc)
+
+		#@TODO - check blackouts first. If yes, add to conflict list
+
+		# do a query for overlaps that start before start date
+		overlap_pre = Participant_Schedule.query.filter(Participant_Schedule.project_id == project_id, 
+														Participant_Schedule.start < start_utc,
+														Participant_Schedule.end > start_utc).all()
+		# do a query for overlaps that start after start date
+		overlap_post = Participant_Schedule.query.filter(Participant_Schedule.project_id == project_id,
+														Participant_Schedule.start > start_utc,
+														Participant_Schedule.start < end_utc).all()
+		# combine
+		overlaps = overlap_pre + overlap_post
+
+		# if combination is empty, date is good to go! Add local timezone dates to no_conflict_dates
+		if not overlaps:
+			no_conflict_dates.append((start, end))
+
+		# if max participants is one, if list is not empty add date to conflict_dates
+		if (max_participants == 1) and (len(overlaps) == 1):
+			conflict_dates.append((start, end)) 
+
+		# else need to review overlaps more closely - create dict where key is tuples in 5 minute increments with start and end
+		# go through each date in the overlap list and compare to each key in the timeframe
+			# use date time range to see if intersection; if yes, increment value by one 
+			# check to see if the new value is equal to max participants. If yes, add date to conflicts
+			# if at end of loop there are no conflicts, add date to clear list!
 
 	pass
 
