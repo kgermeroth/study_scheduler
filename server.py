@@ -349,11 +349,16 @@ def check_date_conflicts():
 
 	submission = request.form
 
-	try:
-		dates = schedule_funcs.check_conflicts_master(submission)
+	no_conflict_dates, conflict_dates = schedule_funcs.check_conflicts_master(submission)
+	print("\n\n# no conflicts", len(no_conflict_dates),"no conflicts", no_conflict_dates,)
+	print("# conflicts",len(conflict_dates),"conflicts", conflict_dates)
 
-	except:
-		raise ValueError('Not all of the fields were filled out, please try again.')
+	# try:
+	# 	no_conflict_dates, conflict_dates = schedule_funcs.check_conflicts_master(submission)
+	# 	print("no conflicts", no_conflict_dates)
+
+	# except:
+	# 	raise ValueError('Not all of the fields were filled out, please try again.')
 
 	redirect_addy = '/schedule/' +str(submission['project_id']) + '/' + str(submission['participant_id'])
 

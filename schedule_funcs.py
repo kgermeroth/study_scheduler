@@ -176,12 +176,15 @@ def check_for_conflicts(calculated_dates, project_id):
 
 	returns a tuple (no_conflict_dates, conflict_dates)"""
 
+	print('# of calc dates',len(calculated_dates),'calculated_dates', calculated_dates)
+
 	no_conflict_dates = []
 	conflict_dates = []
 
 	project = Project.query.filter(Project.project_id == project_id).one()
 
 	max_participants = project.max_participants
+	print('max participants', max_participants)
 
 	tz = pytz.timezone(project.timezone_name)
 	utc = pytz.timezone('UTC')
@@ -202,7 +205,7 @@ def check_for_conflicts(calculated_dates, project_id):
 
 		# do a query for overlaps that start before start date
 		overlap_pre = Participant_Schedule.query.filter(Participant_Schedule.project_id == project_id, 
-														Participant_Schedule.start < start_utc,
+														Participant_Schedule.start <= start_utc,
 														Participant_Schedule.end > start_utc).all()
 		# do a query for overlaps that start after start date
 		overlap_post = Participant_Schedule.query.filter(Participant_Schedule.project_id == project_id,
@@ -213,7 +216,7 @@ def check_for_conflicts(calculated_dates, project_id):
 		print('\n\noverlaps:', overlaps)
 
 		# if combination is empty, date is good to go! Add local timezone dates to no_conflict_dates
-		if not overlaps:
+		if len(overlaps) == 0:
 			no_conflict_dates.append((start, end))
 
 		# if max participants is one and the list is not empty add date to conflict_dates
@@ -250,9 +253,15 @@ def check_for_conflicts(calculated_dates, project_id):
 					# check to see if the new value is equal to max participants. If yes, add date to conflicts
 					if mini_frames[mini_frame] >= max_participants:
 						conflict_dates.append((start, end))
+						break
+
+				# make sure to break the loop for overlaps if max participants have been met
+				if max(mini_frames.values()) >= max_participants:
+					break
 
 			# if at end of loop there are no conflicts, add date to clear list!
-			no_conflict_dates.append((start, end))
+			if max(mini_frames.values()) < max_participants:
+				no_conflict_dates.append((start, end))
 
 	return (no_conflict_dates, conflict_dates)
 
