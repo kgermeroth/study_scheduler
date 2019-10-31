@@ -246,3 +246,33 @@ if __name__ == '__main__':
 
 	init_app()
 	db.create_all()
+
+#####################################################
+# example data
+
+# Participant_Schedule.query.delete()
+# Project_Access.query.delete()
+# Blackouts.query.delete()
+# Project_Default_Schedule.query.delete()
+# Project_Times.query.delete()
+# Project.query.delete()
+# Frequency.query.delete()
+# Timezone.query.delete()
+# Access_Requests.query.delete()
+# Instit_Access.query.delete()
+# Dept_Access.query.delete()
+# User.query.delete()
+# Department.query.delete()
+# Institution.query.delete()
+
+# institution = Institution(institution_id=1, institution_name="Cornell University")
+
+# department = Department(department_id=1, department_name="Animal Sciences", institution_id=1)
+
+# user = User(user_id=1, first_name='Kristin', last_name='Germeroth', email='kg@gmail.com',
+# 			password='password', active=True)
+
+# department_access = Dept_Access(access_id=1, user_id=1, department_id=1, access_level='user')
+
+# instit_access = Instit_Access(user_id=1, institution_id=1, access_level='user')
+
