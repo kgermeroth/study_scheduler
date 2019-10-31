@@ -218,7 +218,7 @@ class Participant_Schedule(db.Model):
 	scheduled_by = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
 
 	def __repr__(self):
-		return(f'<project_id={self.project_id} participant_id={self.participant_id} start={self.start} end={self.end}')
+		return(f'<schedule_id={self.schedule_id} participant_id={self.participant_id} start={self.start} end={self.end}>')
 
 
 ######################################################
