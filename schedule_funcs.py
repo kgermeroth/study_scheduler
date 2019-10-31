@@ -6,6 +6,8 @@ from flask import session
 from datetimerange import DateTimeRange
 import pytz
 
+UTC = pytz.timezone('UTC')
+
 def get_default_schedule(project_id):
 	"""Returns a list of project schedule objects for a project (default schedule)"""
 
@@ -176,18 +178,14 @@ def check_for_conflicts(calculated_dates, project_id):
 
 	returns a tuple (no_conflict_dates, conflict_dates)"""
 
-	print('# of calc dates',len(calculated_dates),'calculated_dates', calculated_dates)
-
 	no_conflict_dates = []
 	conflict_dates = []
 
 	project = Project.query.filter(Project.project_id == project_id).one()
 
 	max_participants = project.max_participants
-	print('max participants', max_participants)
 
 	tz = pytz.timezone(project.timezone_name)
-	utc = pytz.timezone('UTC')
 
 	for date in calculated_dates:
 		start = date[0]
@@ -198,8 +196,8 @@ def check_for_conflicts(calculated_dates, project_id):
 		end = tz.localize(end)
 		
 		# convert to utc for comparison purposes
-		start_utc = start.astimezone(utc)
-		end_utc = end.astimezone(utc)
+		start_utc = start.astimezone(UTC)
+		end_utc = end.astimezone(UTC)
 
 		#@TODO - check blackouts first. If yes, add to conflict list
 
@@ -213,57 +211,60 @@ def check_for_conflicts(calculated_dates, project_id):
 														Participant_Schedule.start < end_utc).all()
 		# combine overlaps (these are in UTC)
 		overlaps = overlap_pre + overlap_post
-		print('\n\noverlaps:', overlaps)
 
-		# if combination is empty, date is good to go! Add local timezone dates to no_conflict_dates
-		if len(overlaps) == 0:
+		if not overlaps:
 			no_conflict_dates.append((start, end))
 
-		# if max participants is one and the list is not empty add date to conflict_dates
-		elif (max_participants == 1) and (len(overlaps) == 1):
-			conflict_dates.append((start, end)) 
-
-		# else need to review overlaps more closely - create dict where key is tuples in 5 minute increments with start and end
 		else:
-			mini_frames = {}
+			overlaps = ((o.start, o.end) for o in overlaps)
 
-			start_time = start_utc
-			end_time = start_time + timedelta(minutes=5)
+			if has_conflicts(overlaps, start_utc, end_utc, max_participants):
+				conflict_dates.append((start, end))
 
-			mini_frames[(start_time, end_time)] = 0
-
-			while end_time <= end_utc:
-				# the new start is equal to the old end, and the new end is 5 minutes later
-				start_time = end_time
-				end_time = start_time + timedelta(minutes=5)
-
-				mini_frames[(start_time, end_time)] = 0
-
-			# go through each date in the overlap list and compare to each key in the timeframe
-			for overlap in overlaps:
-				for mini_frame in mini_frames:
-
-					# use date time range to see if intersection; if yes, increment value by one 
-					over_range = DateTimeRange(overlap.start.astimezone(utc), overlap.end.astimezone(utc))
-					mini_range = DateTimeRange(mini_frame[0].astimezone(utc), mini_frame[1].astimezone(utc))
-
-					if over_range.is_intersection(mini_range):
-						mini_frames[mini_frame] += 1
-						
-					# check to see if the new value is equal to max participants. If yes, add date to conflicts
-					if mini_frames[mini_frame] >= max_participants:
-						conflict_dates.append((start, end))
-						break
-
-				# make sure to break the loop for overlaps if max participants have been met
-				if max(mini_frames.values()) >= max_participants:
-					break
-
-			# if at end of loop there are no conflicts, add date to clear list!
-			if max(mini_frames.values()) < max_participants:
+			else:
 				no_conflict_dates.append((start, end))
 
 	return (no_conflict_dates, conflict_dates)
+
+
+def has_conflicts(existing_appts, start_time, end_time, max_participants):
+	"""Returns True if the date has a conflict, False if the date does not"""
+
+	# create dict where key is tuples in 5 minute increments with start and end
+	mini_frames = {}
+
+	mf_end_time = start_time + timedelta(minutes=5) 
+
+	mini_frames[(start_time, mf_end_time)] = 0
+
+	while mf_end_time <= end_time:
+		# the new start is equal to the old end, and the new end is 5 minutes later
+		mf_start_time = mf_end_time
+		mf_end_time = mf_start_time + timedelta(minutes=5)
+
+		mini_frames[(mf_start_time, mf_end_time)] = 0
+
+	# go through each date in the overlap list and compare to each key in the timeframe
+	for appt in existing_appts:
+		for mini_frame in mini_frames:
+
+			# use date time range to see if there is an intersection
+			appt_range = DateTimeRange(appt[0].astimezone(UTC), appt[1].astimezone(UTC))
+			mini_range = DateTimeRange(mini_frame[0].astimezone(UTC), mini_frame[1].astimezone(UTC))
+
+			# need to check to see if the intersection is valid - calculates the intersection
+			# makes sure it is valid (there is one) and that it isn't zero (this would happen if the end of an appt, ie 9AM, is the start of a mini_frame range)
+			intersection = appt_range.intersection(mini_range)
+			if intersection.is_valid_timerange() and intersection.get_timedelta_second() != 0:
+				mini_frames[mini_frame] += 1
+				
+			# check to see if the new value is equal to max participants. If it is return True
+			if mini_frames[mini_frame] >= max_participants:
+				return True
+
+	# if at end of loop there are no conflicts, add date to clear list!
+	if max(mini_frames.values()) < max_participants:
+		return False
 
 
 def check_conflicts_master(submission):
@@ -285,16 +286,14 @@ def schedule_dates(project_id, participant_id, dates):
 
 	proj_tz = pytz.timezone(project.timezone_name)
 
-	utc = pytz.timezone('UTC')
-
 	for date in dates:
 		# localize dates
 		start_date = proj_tz.localize(date[0])
 		end_date = proj_tz.localize(date[1])
 
 		# convert dates to UTC
-		start_utc = start_date.astimezone(utc)
-		end_utc = end_date.astimezone(utc)
+		start_utc = start_date.astimezone(UTC)
+		end_utc = end_date.astimezone(UTC)
 
 		schedule = Participant_Schedule(
 										project_id=project_id,
