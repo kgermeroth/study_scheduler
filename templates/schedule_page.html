@@ -11,7 +11,7 @@
 			{% if access.project_access == 'view' %}
 				<h3 class="subtle_headline">You do not have permissions to schedule participants.</h3>
 			{% else %}
-				<form action="/check-conflicts" method="POST">
+				<form action="/confirm/{{ access.project_id }}/{{ participant_id }}">
 					{% if project_defaults %}
 					{% else %}
 						<div class="schedule_div" id="div_1">

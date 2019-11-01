@@ -348,7 +348,7 @@ def display_part_scheduling_page(project_id, participant_id):
 						   appointments=appointments)
 
 
-@app.route('/check-conflicts', methods=['POST'])
+@app.route('/confirm/<project_id>/<participant_id>')
 def check_date_conflicts():
 	"""Takes user input, calculates dates, and checks for conflicts"""
 
@@ -358,14 +358,13 @@ def check_date_conflicts():
 
 	try:
 		no_conflict_dates, conflict_dates = schedule_funcs.check_conflicts_master(submission)
-		print("no conflicts", no_conflict_dates)
 
 	except:
 		raise ValueError('Not all of the fields were filled out, please try again.')
 
-	redirect_addy = '/schedule/' +str(submission['project_id']) + '/' + str(submission['participant_id'])
-
-	return redirect(redirect_addy)
+	return rrender_template('confirm_schedule.html', 
+							no_conflict_dates=no_conflict_dates,
+							conflict_dates=conflict_dates)
 
 
 @app.route('/delete-appointment', methods=['POST'])
