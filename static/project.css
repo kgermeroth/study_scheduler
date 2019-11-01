@@ -1,0 +1,20 @@
+#container {
+    width: 800px;
+    margin: auto;
+}
+
+#first {
+    width: 400px;
+    float: left;
+    height: 300px;
+    color: red;
+}
+#second {
+    width: 400px;
+    float: left;
+    height: 300px;
+    color: green;
+}
+#clear {
+    clear: both;
+}
