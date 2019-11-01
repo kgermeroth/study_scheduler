@@ -20,6 +20,67 @@ def get_timeslots(project_id):
 	return Project_Times.query.filter(Project_Times.project_id == project_id).all()
 
 
+def get_participant_appointments(project_id, participant_id):
+	"""Returns a list of participant schedule objects to display already scheduled appointments"""
+
+	appointments = Participant_Schedule.query.filter(Participant_Schedule.project_id == project_id, 
+													 Participant_Schedule.participant_id == participant_id).all()
+
+	appointments.sort(key=lambda a: a.start)
+
+	return appointments
+
+
+def format_appointments(appointments, project_id):
+	"""Takes in list of participant schedule objects, converts to project timezone, formats dates, returns three part tuple:
+		(schedule_id, start, end)"""
+
+	pretty_appts = []	
+
+	project = Project.query.filter(Project.project_id == project_id).one()
+
+	tz = pytz.timezone(project.timezone_name)
+
+	for appt in appointments:
+		start = convert_prettify_appointments(appt.start, tz)
+
+		# if appointment starts and ends the same day, no need to include date in the end
+		if appt.start.date() == appt.end.date():
+			end = convert_prettify_sameday_appt(appt.end, tz)
+		else:
+			end = convert_prettify_appointments(appt.end, tz)
+
+		pretty_appts.append((appt.schedule_id, start, end))
+
+	return pretty_appts
+
+
+def convert_prettify_appointments(appt_time, proj_timezone):
+	"""Takes in participant schedule object, converts to proper timezone, formats into nice string"""
+
+	# specify timezone is UTC
+	appt_time = appt_time.astimezone(UTC)
+
+	# change timezone to project timezone
+	appt_time = appt_time.astimezone(proj_timezone)
+
+	# format it into a nice string
+	return appt_time.strftime('%Y-%m-%d %I:%M %p')
+
+
+def convert_prettify_sameday_appt(appt_time, proj_timezone):
+	"""Takes in participant schedule object, converts to proper timezone, formats into nice string with time only"""
+
+	# specify timezone is UTC
+	appt_time = appt_time.astimezone(UTC)
+
+	# change timezone to project timezone
+	appt_time = appt_time.astimezone(proj_timezone)
+
+	# format it into a nice string
+	return appt_time.strftime('%I:%M %p')
+
+
 def parse_timeframes_from_submission(submission):
 	"""Takes submission and parses into usable format.
 
