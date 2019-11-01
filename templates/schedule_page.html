@@ -51,12 +51,14 @@
 						<tr>
 							<th hidden>schedule_id</th>
 							<th>Appointments Scheduled</th> 
+							<th>Scheduled By</th>
 							<th>Delete</th>
 						</tr>
 						{% for appoint in appointments %}
 							<tr>
 								<td hidden><input type="text" name="schedule_id" value="{{ appoint[0] }}"></td>
 								<td>{{ appoint[1] }} - {{ appoint[2] }}</td>
+								<td>{{ appoint[3] }} {{ appoint[4] }}
 								<td><input type="checkbox" name="delete_appoint_{{ appoint[0] }}"></td>
 							</tr>
 						{% endfor %}

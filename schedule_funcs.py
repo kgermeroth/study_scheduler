@@ -32,8 +32,8 @@ def get_participant_appointments(project_id, participant_id):
 
 
 def format_appointments(appointments, project_id):
-	"""Takes in list of participant schedule objects, converts to project timezone, formats dates, returns three part tuple:
-		(schedule_id, start, end)"""
+	"""Takes in list of participant schedule objects, converts to project timezone, formats dates, returns five part tuple:
+		(schedule_id, start, end, book_by_first, book_by_last"""
 
 	pretty_appts = []	
 
@@ -50,7 +50,7 @@ def format_appointments(appointments, project_id):
 		else:
 			end = convert_prettify_appointments(appt.end, tz)
 
-		pretty_appts.append((appt.schedule_id, start, end))
+		pretty_appts.append((appt.schedule_id, start, end, appt.user_info.first_name, appt.user_info.last_name))
 
 	return pretty_appts
 
