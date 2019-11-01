@@ -52,17 +52,24 @@
 							<th hidden>schedule_id</th>
 							<th>Appointments Scheduled</th> 
 							<th>Scheduled By</th>
-							<th>Delete</th>
+							{% if access.project_access != 'view' %}
+								<th>Cancel</th>
+							{% endif %}
 						</tr>
 						{% for appoint in appointments %}
 							<tr>
 								<td hidden><input type="text" name="schedule_id" value="{{ appoint[0] }}"></td>
 								<td>{{ appoint[1] }} - {{ appoint[2] }}</td>
 								<td>{{ appoint[3] }} {{ appoint[4] }}
-								<td><input type="checkbox" name="delete_appoint_{{ appoint[0] }}"></td>
+								{% if access.project_access != 'view' %}	
+									<td><input type="checkbox" name="delete_appoint_{{ appoint[0] }}"></td>
+								{% endif %}
 							</tr>
 						{% endfor %}
 					</table>
+					<input type="input" name="project_id" value="{{ access.project_id }}" hidden>
+					<input type="input" name="participant_id" value="{{ participant_id }}" hidden>
+					<input type="submit" value="Cancel Selected">
 				</form>
 			{% else %}
 			<h3 class="subtle_headline">There are no appointments scheduled for this participant</h3>
