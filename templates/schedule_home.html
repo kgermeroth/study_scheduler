@@ -3,7 +3,7 @@
 {% block content %}
 	<div class="container">
 		<div class="row justify-content-center">
-			<h1>View/Schedule Appointments</h1>
+			<h1>View/Schedule Appointments for: {{ access.project.int_project_name }}</h1>
 		</div>
 		<div class="row justify-content-center">
 			<form action="/schedule-appt">
@@ -11,7 +11,8 @@
 				<input type="input" name="project_id" value="{{ access.project_id }}" hidden>
 				<input type="submit">
 			</form>
-		</div>
+		</div><br><br>
+		<a href="/project/{{ access.project_id }}">Return to Project Dashboard</a>
 	</div>
 
 {% endblock %}
