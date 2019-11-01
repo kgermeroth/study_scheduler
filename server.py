@@ -335,12 +335,17 @@ def display_part_scheduling_page(project_id, participant_id):
 
 	project_defaults = schedule_funcs.get_default_schedule(project_id)
 
+	appointments = schedule_funcs.get_participant_appointments(project_id, participant_id)
+
+	appointments = schedule_funcs.format_appointments(appointments, project_id)
+
 	return render_template('schedule_page.html', 
 						   access=access, 
 						   participant_id=participant_id,
 						   frequencies=frequencies, 
 						   timeslots=timeslots,
-						   project_defaults=project_defaults)
+						   project_defaults=project_defaults,
+						   appointments=appointments)
 
 
 @app.route('/check-conflicts', methods=['POST'])
