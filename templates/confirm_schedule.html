@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div class="container">
+		<div class="row justify-content-center">
+			<h1>Confirm Appointments for Participant {{ participant_id }}</h1>
+		</div>
+		<div class="container" id="container">
+			<div id="first">
+				<h2>Dates with Conflicts:</h2>
+				{% for date in conflict_dates %}
+					<p>{{ date[0] }} - {{ date[1] }}</p>
+				{% endfor %}
+			</div>
+			<div id="second">
+				<h2>Dates without Conflicts:</h2>
+				{% for date in no_conflict_dates %}
+					<p name="no_conflict" value="{{ date[0] }} - {{ date[1] }}">{{ date[0] }} - {{ date[1] }}</p>
+				{% endfor %}
+			</div>
+			<div id="clear">
+			</div>
+		</div>
+	</div>
+
+
+{% endblock %}
