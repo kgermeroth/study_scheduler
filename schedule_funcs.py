@@ -201,16 +201,7 @@ def check_for_conflicts(calculated_dates, project_id):
 
 		#@TODO - check blackouts first. If yes, add to conflict list
 
-		# do a query for overlaps that start before start date
-		overlap_pre = Participant_Schedule.query.filter(Participant_Schedule.project_id == project_id, 
-														Participant_Schedule.start <= start_utc,
-														Participant_Schedule.end > start_utc).all()
-		# do a query for overlaps that start after start date
-		overlap_post = Participant_Schedule.query.filter(Participant_Schedule.project_id == project_id,
-														Participant_Schedule.start > start_utc,
-														Participant_Schedule.start < end_utc).all()
-		# combine overlaps (these are in UTC)
-		overlaps = overlap_pre + overlap_post
+		overlaps = get_overlapping_appointments(start_utc, end_utc, project_id)
 
 		if not overlaps:
 			no_conflict_dates.append((start, end))
@@ -225,6 +216,23 @@ def check_for_conflicts(calculated_dates, project_id):
 				no_conflict_dates.append((start, end))
 
 	return (no_conflict_dates, conflict_dates)
+
+
+def get_overlapping_appointments(start_utc, end_utc, project_id):
+	"""Returns a list of overlapping Participant_Schedule database objects"""
+
+	# do a query for overlaps that start before start date
+	overlap_pre = Participant_Schedule.query.filter(Participant_Schedule.project_id == project_id, 
+													Participant_Schedule.start <= start_utc,
+													Participant_Schedule.end > start_utc).all()
+	# do a query for overlaps that start after start date
+	overlap_post = Participant_Schedule.query.filter(Participant_Schedule.project_id == project_id,
+													Participant_Schedule.start > start_utc,
+													Participant_Schedule.start < end_utc).all()
+	# combine overlaps (these are in UTC)
+	overlaps = overlap_pre + overlap_post
+
+	return overlaps
 
 
 def has_conflicts(existing_appts, start_time, end_time, max_participants):
@@ -262,9 +270,7 @@ def has_conflicts(existing_appts, start_time, end_time, max_participants):
 			if mini_frames[mini_frame] >= max_participants:
 				return True
 
-	# if at end of loop there are no conflicts, add date to clear list!
-	if max(mini_frames.values()) < max_participants:
-		return False
+	return False
 
 
 def check_conflicts_master(submission):
