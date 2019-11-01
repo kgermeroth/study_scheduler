@@ -372,3 +372,27 @@ def schedule_dates(project_id, participant_id, dates):
 		db.session.add(schedule)
 		db.session.commit()
 
+
+def delete_appointment(submission):
+	"""Deletes appointments"""
+
+	# get the list of schedule ids that were in the form
+	sched_ids = submission.getlist('schedule_id')
+
+	# go through schedule ids and recreate the name of the submissions that might exist
+	for sched_id in sched_ids:
+		key = 'delete_appoint_' + sched_id
+
+		try:
+			delete = submission[key]
+
+			sched_to_delete = Participant_Schedule.query.filter(Participant_Schedule.schedule_id == int(sched_id)).one()
+
+			db.session.delete(sched_to_delete)
+
+			db.session.commit()
+
+		except:
+			continue
+
+
