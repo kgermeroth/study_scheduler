@@ -343,7 +343,34 @@ def check_conflicts_master(submission):
 
 	no_conflict_dates, conflict_dates = check_for_conflicts(calculated_dates, submission['project_id'])
 
+	no_conflict_dates.sort(key=lambda d: d[0])
+	no_conflict_dates = simple_prettify(no_conflict_dates)
+
+	conflict_dates.sort(key=lambda d: d[0])
+	conflict_dates = simple_prettify(conflict_dates)
+
 	return (no_conflict_dates, conflict_dates)
+
+
+def simple_prettify(dates):
+	"""Takes naive date tuple of (start, end) and converts into nice format"""
+
+	pretty_dates = []
+
+	for date in dates:
+		start = date[0]
+		end = date[1]
+
+		start = start.strftime('%Y-%m-%d %I:%M %p')
+
+		if date[0].date() == end.date():
+			end = end.strftime('%I:%M %p')
+		else:
+			end = end.strftime('%Y-%m-%d %I:%M %p')
+
+		pretty_dates.append((start, end))
+
+	return pretty_dates
 
 
 def schedule_dates(project_id, participant_id, dates):
