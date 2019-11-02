@@ -14,9 +14,15 @@
 			</div>
 			<div id="second">
 				<h2>Dates without Conflicts:</h2>
+				<form action="/confirm-schedules" method="POST">
 				{% for date in no_conflict_dates %}
-					<p name="no_conflict" value="{{ date[0] }} - {{ date[1] }}">{{ date[0] }} - {{ date[1] }}</p>
+					<p >{{ date[0] }} - {{ date[1] }}</p>
+					<input type="text" name="no_conflict" value="{{ date[0] }} - {{ date[1] }}" hidden>
 				{% endfor %}
+				<input type="text" name="project_id" value="{{ project_id }}" hidden>
+				<input type="text" name="participant_id" value="{{ participant_id }}" hidden>
+				<input type="submit" value="Confirm non-conflicting dates">
+				</form>
 			</div>
 			<div id="clear">
 			</div>
