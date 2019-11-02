@@ -373,6 +373,41 @@ def simple_prettify(dates):
 	return pretty_dates
 
 
+def convert_confirmed_dates(submission):
+	"""Takes dates confirmed dates from user and converts them into proper datetime objects.
+	Comes in format of '2019-11-05 08:00 AM - 09:00 AM' or '2019-11-05 11:00 PM - 2019-11-06 01:00 AM'
+	Returns a list of tuples of (start, end)"""
+
+	pretty_dates = []
+
+	date_strings = submission.getlist('no_conflict')
+
+	for date_string in date_strings:
+		# separate into start and end
+		start, end = date_string.split(' - ')
+
+		start_date = start[:10]
+
+		if len(end) > 8:
+			end_date = end[:10]
+		else:
+			end_date = start_date
+
+		time_range = start[11:] + ' - ' + end[-8:]
+
+		start_time, end_time = convert_to_military_time(time_range)
+
+		start_datetime = start_date + 'T' + start_time
+		end_datetime = end_date + 'T' + end_time
+
+		start_datetime = datetime.strptime(start_datetime, '%Y-%m-%dT%H:%M')
+		end_datetime = datetime.strptime(end_datetime, '%Y-%m-%dT%H:%M')
+
+		pretty_dates.append((start_datetime, end_datetime))
+
+	return pretty_dates
+
+
 def schedule_dates(project_id, participant_id, dates):
 	"""Takes a list of dates and adds them to the database"""
 
