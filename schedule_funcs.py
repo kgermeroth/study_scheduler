@@ -65,7 +65,7 @@ def convert_prettify_appointments(appt_time, proj_timezone):
 	appt_time = appt_time.astimezone(proj_timezone)
 
 	# format it into a nice string
-	return appt_time.strftime('%Y-%m-%d %I:%M %p')
+	return appt_time.strftime('%Y-%m-%d (%a) %I:%M %p')
 
 
 def convert_prettify_sameday_appt(appt_time, proj_timezone):
@@ -361,12 +361,12 @@ def simple_prettify(dates):
 		start = date[0]
 		end = date[1]
 
-		start = start.strftime('%Y-%m-%d %I:%M %p')
+		start = start.strftime('%Y-%m-%d (%a)  %I:%M %p')
 
 		if date[0].date() == end.date():
 			end = end.strftime('%I:%M %p')
 		else:
-			end = end.strftime('%Y-%m-%d %I:%M %p')
+			end = end.strftime('%Y-%m-%d (%a) %I:%M %p')
 
 		pretty_dates.append((start, end))
 
@@ -375,7 +375,7 @@ def simple_prettify(dates):
 
 def convert_confirmed_dates(submission):
 	"""Takes dates confirmed dates from user and converts them into proper datetime objects.
-	Comes in format of '2019-11-05 08:00 AM - 09:00 AM' or '2019-11-05 11:00 PM - 2019-11-06 01:00 AM'
+	Comes in format of '2019-11-05 (Tue) 08:00 AM - 09:00 AM' or '2019-11-05 (Tue) 11:00 PM - 2019-11-06 (Wed) 01:00 AM'
 	Returns a list of tuples of (start, end)"""
 
 	pretty_dates = []
@@ -393,7 +393,7 @@ def convert_confirmed_dates(submission):
 		else:
 			end_date = start_date
 
-		time_range = start[11:] + ' - ' + end[-8:]
+		time_range = start[-8:] + ' - ' + end[-8:]
 
 		start_time, end_time = convert_to_military_time(time_range)
 
