@@ -21,12 +21,16 @@
 				{% endfor %}
 				<input type="text" name="project_id" value="{{ project_id }}" hidden>
 				<input type="text" name="participant_id" value="{{ participant_id }}" hidden>
-				<input type="submit" value="Confirm non-conflicting dates">
+				{% if no_conflict_dates %}
+					<input type="submit" value="Confirm non-conflicting dates">
+				{% endif %}
 				</form>
 			</div>
 			<div id="clear">
 			</div>
 		</div>
+		<a href="/schedule/{{ project_id }}/{{ participant_id }}">Return to Scheduling for Participant {{ participant_id }}</a><br>
+		<a href="/project/{{ project_id }}">Return to Project Dashboard</a>
 	</div>
 
 
