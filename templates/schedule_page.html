@@ -69,7 +69,9 @@
 					</table>
 					<input type="input" name="project_id" value="{{ access.project_id }}" hidden>
 					<input type="input" name="participant_id" value="{{ participant_id }}" hidden>
-					<input type="submit" value="Cancel Selected">
+					{% if access.project_access != 'view' %}
+						<input type="submit" value="Cancel Selected">
+					{% endif %}
 				</form>
 			{% else %}
 			<h3 class="subtle_headline">There are no appointments scheduled for this participant</h3>
