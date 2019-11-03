@@ -130,7 +130,7 @@ def create_project():
 
 	flash('Your project has been created!')
 
-	redirect_addy = '/project/' + str(project.project_id)
+	redirect_addy = '/manage/' + str(project.project_id)
 
 	return redirect(redirect_addy)
 
