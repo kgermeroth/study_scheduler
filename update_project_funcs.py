@@ -117,7 +117,7 @@ def process_user_changes(submission):
 	user_changes = parse_data(submission)
 
 	for user in user_changes:
-		proj_user = Project_Access.query.filter(Project_Access.user_id == user).one()
+		proj_user = Project_Access.query.filter(Project_Access.user_id == user, Project_Access.project_id == submission['project_id']).one()
 
 		# check to see if user should be deleted first and if yes, delete the user
 		if user_changes[user]['remove']:
