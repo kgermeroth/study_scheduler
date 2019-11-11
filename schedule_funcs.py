@@ -263,13 +263,16 @@ def check_for_conflicts(calculated_dates, project_id):
 		#@TODO - check blackouts first. If yes, add to conflict list
 
 		overlaps = get_overlapping_appointments(start_utc, end_utc, project_id)
+		if overlaps:
+			((o.start, o.end) for o in overlaps)
+
+		# add dates from no_conflict_dates list to overlaps to make sure there are no conflicts with those
+		overlaps.extend(no_conflict_dates)
 
 		if not overlaps:
 			no_conflict_dates.append((start, end))
 
 		else:
-			overlaps = ((o.start, o.end) for o in overlaps)
-
 			if has_conflicts(overlaps, start_utc, end_utc, max_participants):
 				conflict_dates.append((start, end))
 
