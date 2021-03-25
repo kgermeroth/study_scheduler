@@ -73,7 +73,7 @@ python3-xlib==0.15
 PyTweening==1.0.3
 pytz==2019.3
 pyxdg==0.25
-PyYAML==3.12
+PyYAML==5.4
 pyzmq==18.1.0
 reportlab==3.4.0
 requests==2.22.0
